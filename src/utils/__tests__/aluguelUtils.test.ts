@@ -9,8 +9,8 @@ import {
 
 describe('aluguelUtils', () => {
   it('formatarData - retorna vazio para null/undefined', () => {
-    expect(formatarData(null as any)).toBe('');
-    expect(formatarData(undefined as any)).toBe('');
+    expect(formatarData(null)).toBe('');
+    expect(formatarData(undefined)).toBe('');
   });
 
   it('formatarData - formata Date para yyyy-mm-dd', () => {
@@ -21,7 +21,7 @@ describe('aluguelUtils', () => {
   it('parseLocalDate - parse yyyy-mm-dd', () => {
     const d = parseLocalDate('2025-08-01');
     expect(d.getFullYear()).toBe(2025);
-    expect(d.getMonth()).toBe(7); // zero-based
+    expect(d.getMonth()).toBe(7);
     expect(d.getDate()).toBe(1);
   });
 
