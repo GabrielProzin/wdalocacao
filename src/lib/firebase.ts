@@ -36,6 +36,7 @@ function createFirebaseApp(): FirebaseApp {
 }
 
 export const app = createFirebaseApp();
+<<<<<<< HEAD
 
 const forceLongPolling =
   process.env.NEXT_PUBLIC_FIREBASE_FORCE_LONG_POLLING === '1';
@@ -48,4 +49,11 @@ export const db: Firestore = initializeFirestore(app, {
   }),
 
   experimentalForceLongPolling: forceLongPolling,
+=======
+export const db: Firestore = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+  experimentalForceLongPolling: true,
+>>>>>>> 35e2769d4c9dc6d8125593c2798ceccf1d7e29b1
 });
