@@ -1,0 +1,69 @@
+.mensagem {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.botoes {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btnExcluir {
+  background-color: #dc2626;
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #b91c1c;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnExcluir:hover {
+  background-color: #b91c1c;
+}
+
+.btnEditar {
+  background-color: #facc15;
+  color: #3f2e20;
+  padding: 0.25rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #eab308;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.btnEditar:hover {
+  background-color: #eab308;
+}
+
+.link {
+  display: block;
+  text-align: center;
+  background-color: #f97316;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #ea580c;
+  margin-top: 1rem;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.link:hover {
+  background-color: #ea580c;
+}
