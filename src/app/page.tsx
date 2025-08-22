@@ -1,6 +1,7 @@
 import styles from './../styles/homePage/homePage.module.css';
 import Link from 'next/link';
 import { poppins, openSans, montserrat } from '../fonts/fonts';
+import { Logout } from '@/features/auth/components/Logout';
 
 export default function HomePage() {
   return (
@@ -26,6 +27,7 @@ export default function HomePage() {
           >
             <span className={styles.btnText}> Lista de Aluguel</span>
           </Link>
+          <Logout />
         </div>
       </div>
     </main>
