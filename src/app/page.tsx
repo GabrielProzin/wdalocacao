@@ -1,7 +1,6 @@
 import styles from './../styles/homePage/homePage.module.css';
 import Link from 'next/link';
 import { poppins, openSans, montserrat } from '../fonts/fonts';
-import { redirect } from 'next/navigation';
 
 export default function HomePage() {
   return (
