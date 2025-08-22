@@ -4,8 +4,6 @@ import { poppins, openSans, montserrat } from '../fonts/fonts';
 import { redirect } from 'next/navigation';
 
 export default function HomePage() {
-  redirect('/login');
-
   return (
     <main className={styles.main}>
       <div className={styles.container}>

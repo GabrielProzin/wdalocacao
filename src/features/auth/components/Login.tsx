@@ -12,24 +12,23 @@ export const Login = () => {
 
   const router = useRouter();
   const ALLOWED_UID = process.env.NEXT_PUBLIC_ALLOWED_UID!;
-  const [err, setErr] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErr(null);
 
     try {
       const cred = await signInWithEmailAndPassword(auth, username, password);
       const uid = cred.user.uid;
 
       if (uid === ALLOWED_UID) {
-        router.push('/'); // ok: vai pra home
+        router.push('/');
+        console.log('voce conseguiu!');
       } else {
-        await signOut(auth); // derruba sessão não autorizada
-        setErr('Conta não autorizada para este sistema.');
+        await signOut(auth);
+        console.log('Conta não autorizada para este sistema.');
       }
     } catch {
-      setErr('Falha ao entrar. Verifique e-mail e senha.');
+      console.log('Falha ao entrar. Verifique e-mail e senha.');
     }
   };
 
