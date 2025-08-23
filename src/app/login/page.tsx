@@ -1,7 +1,11 @@
 'use client';
 
-import { Login } from '@/features/auth/components/Login';
+import { LoginForm } from '@/features/auth/components/LoginForm';
 
 export default function LoginPage() {
-  return <Login />;
+  return (
+    <main>
+      <LoginForm />
+    </main>
+  );
 }
