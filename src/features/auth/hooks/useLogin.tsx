@@ -6,12 +6,13 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '@/lib/auth';
 import { getAllowedUids } from '../../auth/utils/allowedUids';
 import { humanizeFirebaseError } from '../../auth/utils/errorMessages';
+import { FirebaseError } from 'firebase/app';
 
 type UseLoginReturn = {
   email: string;
-  senha: string;
+  password: string;
   setEmail: (v: string) => void;
-  setSenha: (v: string) => void;
+  setPassword: (v: string) => void;
   loading: boolean;
   error: string | null;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -20,7 +21,7 @@ type UseLoginReturn = {
 export function useLogin(redirectTo: string = '/'): UseLoginReturn {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setErr] = useState<string | null>(null);
 
@@ -30,7 +31,7 @@ export function useLogin(redirectTo: string = '/'): UseLoginReturn {
     setLoading(true);
 
     try {
-      const cred = await signInWithEmailAndPassword(auth, email, senha);
+      const cred = await signInWithEmailAndPassword(auth, email, password);
 
       const allowedUids = getAllowedUids();
       if (allowedUids.length > 0 && !allowedUids.includes(cred.user.uid)) {
@@ -41,11 +42,14 @@ export function useLogin(redirectTo: string = '/'): UseLoginReturn {
 
       router.replace(redirectTo);
     } catch (err) {
+      if (err instanceof FirebaseError) {
+        console.log('[AUTH ERROR]', err.code, err.message);
+      } else {
+        console.log('[AUTH ERROR]', err);
+      }
       setErr(humanizeFirebaseError(err));
-    } finally {
-      setLoading(false);
     }
   }
 
-  return { email, senha, setEmail, setSenha, loading, error, onSubmit };
+  return { email, password, setEmail, setPassword, loading, error, onSubmit };
 }

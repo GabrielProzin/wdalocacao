@@ -27,7 +27,7 @@ export default function HomePage() {
           >
             <span className={styles.btnText}> Lista de Aluguel</span>
           </Link>
-          <Logout />
+          {/*<Logout />*/}
         </div>
       </div>
     </main>
