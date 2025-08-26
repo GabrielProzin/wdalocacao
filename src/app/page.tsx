@@ -1,7 +1,7 @@
 import styles from './../styles/homePage/homePage.module.css';
 import Link from 'next/link';
 import { poppins, openSans, montserrat } from '../fonts/fonts';
-import { Logout } from '@/features/auth/components/Logout';
+/*import { Logout } from '@/features/auth/components/Logout';*/
 
 export default function HomePage() {
   return (
