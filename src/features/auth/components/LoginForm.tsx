@@ -8,11 +8,7 @@ import { Profiler, type ProfilerOnRenderCallback } from 'react';
 
 export function LoginForm() {
   const { email, password, setEmail, setPassword, loading, onSubmit } =
-<<<<<<< HEAD
-    useLogin('/');
-=======
     useLogin('/home');
->>>>>>> 9bfcbf4 (new home page test)
 
   const onRender: ProfilerOnRenderCallback = (
     id,
