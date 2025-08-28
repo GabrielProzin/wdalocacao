@@ -55,55 +55,58 @@ export default function RentalModal({
         </div>
 
         <div className={styles.modalBody}>
-          <div className={styles.formRow}>
-            <label>Cliente</label>
-            <input type="text" placeholder="Nome:" />
-          </div>
-
-          <div className={styles.formRow}>
-            <label>Telefone</label>
-            <input type="tel" placeholder="Ex: (62) 91234-5678" />
-          </div>
-
-          <div className={styles.formRow}>
-            <label>Jogos</label>
-            <input type="number" placeholder="Nº jogos" />
-            <label>Forros</label>
-            <input type="number" placeholder="Nº forros" />
-          </div>
-
-          <div className={styles.formRow}>
-            <label>Endereço</label>
-            <input type="text" placeholder="Ex: Rua multirão.." />
-          </div>
-
-          <div className={styles.formRow}>
-            <label>Distância </label>
-            <input type="text" placeholder="Ex: 1000 metros" />
-          </div>
-
-          <div>
-            <label>
-              <input type="checkbox" />
-              Incluir frete?
-            </label>
-          </div>
-
-          <div className={styles.grid2}>
+          <div className={styles.formContainer}>
             <div className={styles.formRow}>
-              <label>Data de Entrega</label>
-              <input type="date" />
+              <label>Cliente</label>
+              <input type="text" placeholder="Nome:" />
             </div>
 
             <div className={styles.formRow}>
-              <label>Data de Devolução</label>
-              <input type="date" />
+              <label>Telefone</label>
+              <input type="tel" placeholder="Ex: (62) 91234-5678" />
             </div>
-          </div>
 
-          <div className={styles.formRow}>
-            <label>Observações</label>
-            <textarea rows={3} />
+            <div className={styles.formRowTwoCols}>
+              <div className={styles.field}>
+                <label>Jogos</label>
+                <input type="number" placeholder="Nº jogos" />
+              </div>
+              <div className={styles.field}>
+                <label>Forros</label>
+                <input type="number" placeholder="Nº forros" />
+              </div>
+            </div>
+
+            <div className={styles.formRow}>
+              <label>Endereço</label>
+              <input type="text" placeholder="Ex: Rua multirão.." />
+            </div>
+
+            <div className={styles.formRow}>
+              <label>Distância</label>
+              <input type="text" placeholder="Ex: 1000 metros" />
+            </div>
+
+            <div className={styles.formRowInline}>
+              <input id="incluirFrete" type="checkbox" />
+              <label htmlFor="incluirFrete">Incluir frete?</label>
+            </div>
+
+            <div className={styles.grid2}>
+              <div className={styles.formRow}>
+                <label>Data de Entrega</label>
+                <input type="date" />
+              </div>
+              <div className={styles.formRow}>
+                <label>Data de Devolução</label>
+                <input type="date" />
+              </div>
+            </div>
+
+            <div className={styles.formRow}>
+              <label>Observações</label>
+              <textarea rows={3} />
+            </div>
           </div>
         </div>
 

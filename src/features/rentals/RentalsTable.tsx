@@ -21,7 +21,7 @@ export default function RentalsTable() {
               {
                 nome: 'Maria Souza',
                 tel: '(11) 98765-4321',
-                itens: '10 Cadeiras, 2 Mesas, 2 forros',
+                itens: '8 Cadeiras, 2 Mesas, 2 forros',
                 data: '15/06/2023',
                 valor: 'R$ 210,00',
                 status: 'Concluído',
