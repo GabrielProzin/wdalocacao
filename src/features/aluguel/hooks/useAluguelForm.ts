@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Aluguel } from '@/features/aluguel/models/Aluguel';
 import {
   formatarData,
@@ -13,11 +13,39 @@ import {
 } from '@/features/aluguel/services/aluguelService';
 import { useRouter } from 'next/navigation';
 
+// Estado controlado do formulário
+type AluguelFormState = {
+  nomeCliente: string;
+  telefoneCliente: string;
+  jogos: string;
+  forroQuantidade: string;
+  enderecoEntrega: string;
+  distanciaKM: string;
+  frete: boolean;
+  valorFrete: string;
+  dataEntrega: string;
+  horaEntrega: string;
+  dataDevolucao: string;
+  horaDevolucao: string;
+  status: Aluguel['status'];
+  observacoes: string;
+};
+
+// Tipo do retorno do hook
+export type UseAluguelFormReturn = {
+  form: AluguelFormState;
+  setForm: React.Dispatch<React.SetStateAction<AluguelFormState>>;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  calcularValor: () => number;
+  mensagem: string | null;
+  excluirAluguel: (id: string) => Promise<void>;
+};
+
 export function useAluguelForm(
   aluguel?: Aluguel,
   modo: 'cadastro' | 'editar' = 'cadastro'
-) {
-  const [form, setForm] = useState({
+): UseAluguelFormReturn {
+  const [form, setForm] = useState<AluguelFormState>({
     nomeCliente: '',
     telefoneCliente: '',
     jogos: '0',
@@ -30,11 +58,11 @@ export function useAluguelForm(
     horaEntrega: '',
     dataDevolucao: '',
     horaDevolucao: '',
-    status: 'pendente' as Aluguel['status'],
+    status: 'pendente',
     observacoes: '',
   });
-  const [mensagem, setMensagem] = useState('');
 
+  const [mensagem, setMensagem] = useState<string | null>(null);
   const router = useRouter();
 
   const PRECO_JOGO = 15;
@@ -61,39 +89,44 @@ export function useAluguelForm(
     }
   }, [aluguel, modo]);
 
-  const calcularValor = () => {
+  const calcularValor = (): number => {
     const jogos = parseInt(form.jogos, 10);
     const forros = parseInt(form.forroQuantidade, 10);
     const freteValor = form.frete ? parseInt(form.valorFrete, 10) : 0;
     return jogos * PRECO_JOGO + forros * PRECO_FORRO + freteValor;
+    // se preferir number seguro, pode usar Number.parseInt(...)
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     try {
-      if (!form.nomeCliente)
-        return setMensagem('❌ Informe o nome do cliente.');
-      if (parseInt(form.jogos, 10) < 1)
-        return setMensagem('❌ O número de jogos deve ser no mínimo 1');
+      if (!form.nomeCliente) {
+        setMensagem('❌ Informe o nome do cliente.');
+        return;
+      }
+      if (parseInt(form.jogos, 10) < 1) {
+        setMensagem('❌ O número de jogos deve ser no mínimo 1');
+        return;
+      }
 
-      const novoAluguel = {
+      const novoAluguel: Omit<Aluguel, 'id'> = {
         nomeCliente: form.nomeCliente,
         telefoneCliente: form.telefoneCliente,
         itens: {
-          jogos: intervaloJogo(parseInt(form.jogos)),
-          mesaQuantidade: parseInt(form.jogos),
-          cadeiraQuantidade: parseInt(form.jogos) * 4,
-          forroQuantidade: parseInt(form.forroQuantidade),
+          jogos: intervaloJogo(parseInt(form.jogos, 10)),
+          mesaQuantidade: parseInt(form.jogos, 10),
+          cadeiraQuantidade: parseInt(form.jogos, 10) * 4,
+          forroQuantidade: parseInt(form.forroQuantidade, 10),
         },
         valor: calcularValor(),
-        valorFrete: form.frete ? parseInt(form.valorFrete) : 0,
+        valorFrete: form.frete ? parseInt(form.valorFrete, 10) : 0,
         dataEntrega: parseLocalDate(form.dataEntrega),
         horaEntrega: parseLocalHour(form.horaEntrega),
         dataDevolucao: parseLocalDate(form.dataDevolucao),
         horaDevolucao: parseLocalHour(form.horaDevolucao),
         enderecoEntrega: form.enderecoEntrega,
         frete: form.frete,
-        distanciaKM: parseInt(form.distanciaKM),
+        distanciaKM: parseInt(form.distanciaKM, 10),
         status: form.status,
         observacoes: form.observacoes,
       };
@@ -114,9 +147,8 @@ export function useAluguelForm(
     }
   };
 
-  const excluirAluguelHandler = async (id: string) => {
+  const excluirAluguelHandler = async (id: string): Promise<void> => {
     if (!id) return;
-
     const ok = window.confirm(
       'Tem certeza que deseja realizar a exclusão desse aluguel?'
     );
