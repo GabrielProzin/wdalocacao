@@ -21,7 +21,7 @@ export default function SummaryModal({
   calcularValor,
 }: SummaryModalProps) {
   return (
-    <div className={styles.formRow}>
+    <div className={styles.summary}>
       <small>
         Quantidade de jogos: {jogosNumero} = R$ {jogosNumero * 15} <br />
         Quantidade de forros: {forrosNumero} = R$ {forrosNumero * 5} <br />

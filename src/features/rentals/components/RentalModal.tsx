@@ -258,7 +258,6 @@ export default function RentalModal({
             </div>
           </div>
 
-          {/* Resumo — usando exatamente seus nomes de variáveis */}
           <SummaryModal
             jogosNumero={jogosNumero}
             forrosNumero={forrosNumero}
