@@ -1,4 +1,4 @@
-import styles from './rentals.module.css';
+import styles from '../rentals.module.css';
 
 export default function RentalsTable() {
   return (

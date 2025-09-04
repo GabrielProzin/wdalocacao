@@ -14,7 +14,7 @@ import {
 import { useRouter } from 'next/navigation';
 
 // Estado controlado do formulário
-type AluguelFormState = {
+export type AluguelFormState = {
   nomeCliente: string;
   telefoneCliente: string;
   jogos: string;
@@ -94,7 +94,6 @@ export function useAluguelForm(
     const forros = parseInt(form.forroQuantidade, 10);
     const freteValor = form.frete ? parseInt(form.valorFrete, 10) : 0;
     return jogos * PRECO_JOGO + forros * PRECO_FORRO + freteValor;
-    // se preferir number seguro, pode usar Number.parseInt(...)
   };
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {

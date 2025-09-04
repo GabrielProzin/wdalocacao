@@ -1,17 +1,15 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import styles from './rentals.module.css';
+import styles from '../rentals.module.css';
 
 import { Aluguel } from '@/features/aluguel/models/Aluguel';
 import { useAluguelForm } from '@/features/aluguel/hooks/useAluguelForm';
-import { montserrat, openSans, poppins } from '@/fonts/fonts';
-import { formatarDistanciaLegivel } from '@/utils/aluguelUtils';
 import {
   formatarNome,
   formatarTelefone,
 } from '@/features/validationFunctions/validationFunctions';
-import { div } from 'framer-motion/client';
+import SummaryModal from './SummaryModal';
 
 type RentalModalProps = {
   open: boolean;
@@ -56,6 +54,8 @@ export default function RentalModal({
   const valorFreteNumero = parseInt(form.valorFrete, 10);
   const distanciaMetros = parseInt(form.distanciaKM, 10);
 
+  const stripLeadingZeros = (v: string) => v.replace(/^0+/, '') || '0';
+
   const onConfirmar = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleSubmit(e);
@@ -78,6 +78,7 @@ export default function RentalModal({
             className={styles.iconBtn}
             onClick={onClose}
             aria-label="Fechar"
+            type="button"
           >
             ✖
           </button>
@@ -132,7 +133,7 @@ export default function RentalModal({
                     onChange={e =>
                       setForm({
                         ...form,
-                        jogos: e.target.value.replace(/^0+/, '') || '0',
+                        jogos: stripLeadingZeros(e.target.value),
                       })
                     }
                     required
@@ -149,8 +150,7 @@ export default function RentalModal({
                     onChange={e =>
                       setForm({
                         ...form,
-                        forroQuantidade:
-                          e.target.value.replace(/^0+/, '') || '0',
+                        forroQuantidade: stripLeadingZeros(e.target.value),
                       })
                     }
                     required
@@ -173,7 +173,7 @@ export default function RentalModal({
               </div>
 
               <div className={styles.formRow}>
-                <label>Distância</label>
+                <label>Distância (m)</label>
                 <input
                   type="text"
                   placeholder="Ex: 1000 metros"
@@ -181,7 +181,7 @@ export default function RentalModal({
                   onChange={e =>
                     setForm({
                       ...form,
-                      distanciaKM: e.target.value.replace(/^0+/, '') || '0',
+                      distanciaKM: stripLeadingZeros(e.target.value),
                     })
                   }
                   required
@@ -193,7 +193,7 @@ export default function RentalModal({
                   id="incluirFrete"
                   type="checkbox"
                   checked={form.frete}
-                  onChange={e => setForm({ ...form, frete: !form.frete })}
+                  onChange={() => setForm({ ...form, frete: !form.frete })}
                 />
                 <label htmlFor="incluirFrete">Incluir frete?</label>
               </div>
@@ -207,7 +207,7 @@ export default function RentalModal({
                     onChange={e =>
                       setForm({
                         ...form,
-                        valorFrete: e.target.value.replace(/^0+/, '') || '0',
+                        valorFrete: stripLeadingZeros(e.target.value),
                       })
                     }
                     required
@@ -233,7 +233,7 @@ export default function RentalModal({
                     type="date"
                     value={form.dataDevolucao}
                     onChange={e =>
-                      setForm({ ...form, dataEntrega: e.target.value })
+                      setForm({ ...form, dataDevolucao: e.target.value })
                     }
                   />
                 </div>
@@ -241,8 +241,15 @@ export default function RentalModal({
 
               <div className={styles.formRow}>
                 <label>Observações</label>
-                <textarea rows={3} />
+                <textarea
+                  rows={3}
+                  value={form.observacoes}
+                  onChange={e =>
+                    setForm({ ...form, observacoes: e.target.value })
+                  }
+                />
               </div>
+
               {mensagem && (
                 <div className={styles.formRow}>
                   <p>{mensagem}</p>
@@ -251,18 +258,15 @@ export default function RentalModal({
             </div>
           </div>
 
-          <div className={styles.formRow}>
-            <small>
-              Jogos: {jogosNumero} = R$ {jogosNumero * 15} <br />
-              Forros: {forrosNumero} = R$ {forrosNumero * 5} <br />
-              Distância: {formatarDistanciaLegivel(distanciaMetros)} <br />
-              Frete: {form.frete
-                ? `R$ ${valorFreteNumero}`
-                : 'Não incluso'}{' '}
-              <br />
-              <strong>Valor total: R$ {calcularValor()}</strong>
-            </small>
-          </div>
+          {/* Resumo — usando exatamente seus nomes de variáveis */}
+          <SummaryModal
+            jogosNumero={jogosNumero}
+            forrosNumero={forrosNumero}
+            valorFreteNumero={valorFreteNumero}
+            distanciaMetros={distanciaMetros}
+            frete={form.frete}
+            calcularValor={calcularValor}
+          />
 
           <div className={styles.modalFooter}>
             <button type="button" className={styles.ghostBtn} onClick={onClose}>

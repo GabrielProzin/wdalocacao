@@ -5,8 +5,8 @@ import Sidebar from '@/features/layout/Sidebar';
 import Topbar from '@/features/layout/Topbar';
 import StatsCards from '@/features/dashboard/StatsCards';
 import QuickActions from '@/features/dashboard/QuickActions';
-import RentalsTable from '@/features/rentals/RentalsTable';
-import RentalModal from '@/features/rentals/RentalModal';
+import RentalsTable from '@/features/rentals/components/RentalsTable';
+import RentalModal from '@/features/rentals/components/RentalModal';
 import styles from '@/features/layout/layout.module.css';
 
 export default function PainelPage() {
