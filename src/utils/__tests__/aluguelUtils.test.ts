@@ -31,9 +31,9 @@ describe('aluguelUtils', () => {
   });
 
   it('formatarDistanciaLegivel - lida com metros e km', () => {
-    expect(formatarDistanciaLegivel(12)).toBe('0.012 mts');
+    expect(formatarDistanciaLegivel(12)).toBe('12 m');
     expect(formatarDistanciaLegivel(1000)).toBe('1 km');
-    expect(formatarDistanciaLegivel(1325)).toBe('1 km e 325 mts');
+    expect(formatarDistanciaLegivel(1325)).toBe('1 km e 325 m');
   });
 
   it('intervaloJogo - lança se jogos > 100', () => {

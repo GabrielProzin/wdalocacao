@@ -1,7 +1,8 @@
 export const formatarData = (data: Date | null | undefined): string => {
   if (!data) return '';
   const d = new Date(data);
-  return isNaN(d.getTime()) ? '' : d.toISOString().split('T')[0];
+  if (isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 
 export const parseLocalDate = (dateStr: string): Date => {
@@ -10,6 +11,7 @@ export const parseLocalDate = (dateStr: string): Date => {
 };
 
 export const parseLocalHour = (timeStr: string): string => {
+  if (!timeStr) return '';
   const [hours, minutes] = timeStr.split(':').map(Number);
   const hh = String(hours).padStart(2, '0');
   const mm = String(minutes).padStart(2, '0');
@@ -17,10 +19,11 @@ export const parseLocalHour = (timeStr: string): string => {
 };
 
 export const formatarDistanciaLegivel = (metros: number): string => {
-  if (metros < 1000) return `0.${metros.toString().padStart(3, '0')} mts`;
+  if (!Number.isFinite(metros) || metros < 0) return '0 m';
+  if (metros < 1000) return `${metros} m`;
   const km = Math.floor(metros / 1000);
   const restante = metros % 1000;
-  return restante === 0 ? `${km} km` : `${km} km e ${restante} mts`;
+  return restante === 0 ? `${km} km` : `${km} km e ${restante} m`;
 };
 
 export const intervaloJogo = (jogos: number) => {

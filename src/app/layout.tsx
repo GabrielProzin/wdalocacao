@@ -1,4 +1,12 @@
 import Protected from '@/features/auth/components/Protected';
+import AppShell from '@/features/layout/AppShell';
+import './globals.css';
+import type { Viewport } from 'next';
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#167768',
+};
 
 export const metadata = {
   title: 'WDA Locação',
@@ -12,15 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body
-        style={{
-          margin: 0,
-          padding: 0,
-          backgroundColor: '#343541',
-          minHeight: '100vh',
-        }}
-      >
-        <Protected>{children}</Protected>
+      <body>
+        <Protected>
+          <AppShell>{children}</AppShell>
+        </Protected>
       </body>
     </html>
   );

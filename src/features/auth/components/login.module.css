@@ -1,0 +1,125 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #f7f8f5;
+}
+.intro {
+  background: #163b34;
+  color: #e5efdf;
+  padding: 70px clamp(35px, 7vw, 100px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.brand,
+.smallBrand {
+  font-family: 'Manrope', sans-serif;
+  font-size: 46px;
+  font-weight: 800;
+  color: #164535;
+  background: #d9ebcc;
+  border-radius: 18px;
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  letter-spacing: -4px;
+  padding-bottom: 8px;
+  margin-bottom: 55px;
+}
+.intro :global(.eyebrow) {
+  color: #b6cda3;
+}
+.intro h1 {
+  font-size: clamp(32px, 3.5vw, 52px);
+  line-height: 1.2;
+  margin: 20px 0 25px;
+  letter-spacing: -2px;
+}
+.intro > p:not(:global(.eyebrow)) {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #afc9be;
+}
+.introBottom {
+  position: absolute;
+  bottom: 42px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #99b3a6;
+}
+.card {
+  max-width: 410px;
+  width: 100%;
+  padding: 35px;
+  margin: auto;
+}
+.card h2 {
+  font-size: 29px;
+  margin-top: 13px;
+  letter-spacing: -1px;
+}
+.subtitle {
+  color: var(--muted);
+  margin: 10px 0 30px;
+  font-size: 13px;
+}
+.card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card label {
+  font-weight: 600;
+  font-size: 12px;
+}
+.card input {
+  min-height: 50px;
+  border: 1px solid #dbe5de;
+  padding: 14px;
+  border-radius: 10px;
+  background: white;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.card button {
+  width: 100%;
+  margin-top: 8px;
+}
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 28px;
+}
+.smallBrand {
+  display: none;
+}
+@media (max-width: 760px) {
+  .page {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
+  .intro {
+    display: none;
+  }
+  .card {
+    padding: 28px 12px;
+  }
+  .smallBrand {
+    display: grid;
+    margin-bottom: 38px;
+    width: 55px;
+    height: 55px;
+    font-size: 37px;
+  }
+  .card h2 {
+    font-size: 28px;
+  }
+}

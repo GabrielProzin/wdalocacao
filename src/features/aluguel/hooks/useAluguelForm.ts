@@ -1,144 +1,99 @@
-import { useEffect, useState } from 'react';
-import { Aluguel } from '@/features/aluguel/models/Aluguel';
-import {
-  formatarData,
-  parseLocalDate,
-  parseLocalHour,
-  intervaloJogo,
-} from '@/utils/aluguelUtils';
+'use client';
+import { useRef, useState } from 'react';
+import { Aluguel } from '../models/Aluguel';
 import {
   cadastrarAluguel,
   editarAluguel,
   excluirAluguel,
-} from '@/features/aluguel/services/aluguelService';
+} from '../services/aluguelService';
+import {
+  criarForm,
+  calcularValorForm,
+  montarAluguel,
+} from '../services/formService';
 import { useRouter } from 'next/navigation';
-
+import {
+  mensagemErroAoSalvar,
+  mensagemErroOperacao,
+} from '../services/saveError';
 export function useAluguelForm(
   aluguel?: Aluguel,
   modo: 'cadastro' | 'editar' = 'cadastro'
 ) {
-  const [form, setForm] = useState({
-    nomeCliente: '',
-    telefoneCliente: '',
-    jogos: '0',
-    forroQuantidade: '0',
-    enderecoEntrega: '',
-    distanciaKM: '0',
-    frete: false,
-    valorFrete: '0',
-    dataEntrega: '',
-    horaEntrega: '',
-    dataDevolucao: '',
-    horaDevolucao: '',
-    status: 'pendente' as Aluguel['status'],
-    observacoes: '',
-  });
+  const [form, setForm] = useState(() => criarForm(aluguel));
   const [mensagem, setMensagem] = useState('');
-
+  const [salvando, setSalvando] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
+  const busy = useRef(false);
   const router = useRouter();
-
-  const PRECO_JOGO = 15;
-  const PRECO_FORRO = 5;
-
-  useEffect(() => {
-    if (modo === 'editar' && aluguel) {
-      setForm({
-        nomeCliente: aluguel.nomeCliente,
-        telefoneCliente: aluguel.telefoneCliente,
-        jogos: aluguel.itens?.jogos?.toString() ?? '0',
-        forroQuantidade: aluguel.itens?.forroQuantidade?.toString() ?? '0',
-        enderecoEntrega: aluguel.enderecoEntrega ?? '',
-        distanciaKM: aluguel.distanciaKM?.toString() ?? '0',
-        frete: aluguel.frete ?? false,
-        valorFrete: aluguel.valorFrete?.toString() ?? '0',
-        dataEntrega: formatarData(aluguel.dataEntrega),
-        horaEntrega: aluguel.horaEntrega?.substring(0, 5) ?? '',
-        dataDevolucao: formatarData(aluguel.dataDevolucao),
-        horaDevolucao: aluguel.horaDevolucao?.substring(0, 5) ?? '',
-        status: aluguel.status ?? 'pendente',
-        observacoes: aluguel.observacoes ?? '',
-      });
-    }
-  }, [aluguel, modo]);
-
-  const calcularValor = () => {
-    const jogos = parseInt(form.jogos, 10);
-    const forros = parseInt(form.forroQuantidade, 10);
-    const freteValor = form.frete ? parseInt(form.valorFrete, 10) : 0;
-    return jogos * PRECO_JOGO + forros * PRECO_FORRO + freteValor;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    try {
-      if (!form.nomeCliente)
-        return setMensagem('❌ Informe o nome do cliente.');
-      if (parseInt(form.jogos, 10) < 1)
-        return setMensagem('❌ O número de jogos deve ser no mínimo 1');
-
-      const novoAluguel = {
-        nomeCliente: form.nomeCliente,
-        telefoneCliente: form.telefoneCliente,
-        itens: {
-          jogos: intervaloJogo(parseInt(form.jogos)),
-          mesaQuantidade: parseInt(form.jogos),
-          cadeiraQuantidade: parseInt(form.jogos) * 4,
-          forroQuantidade: parseInt(form.forroQuantidade),
-        },
-        valor: calcularValor(),
-        valorFrete: form.frete ? parseInt(form.valorFrete) : 0,
-        dataEntrega: parseLocalDate(form.dataEntrega),
-        horaEntrega: parseLocalHour(form.horaEntrega),
-        dataDevolucao: parseLocalDate(form.dataDevolucao),
-        horaDevolucao: parseLocalHour(form.horaDevolucao),
-        enderecoEntrega: form.enderecoEntrega,
-        frete: form.frete,
-        distanciaKM: parseInt(form.distanciaKM),
-        status: form.status,
-        observacoes: form.observacoes,
-      };
-
-      if (modo === 'editar' && aluguel?.id) {
-        await editarAluguel(aluguel.id, novoAluguel);
-        setMensagem('✅ Aluguel atualizado com sucesso!');
-      } else {
-        await cadastrarAluguel(novoAluguel);
-        setMensagem('✅ Aluguel cadastrado com sucesso!');
-        setTimeout(() => {
-          router.push('/');
-        }, 2000);
-      }
-    } catch (err) {
-      console.error(err);
-      setMensagem('❌ Erro ao salvar aluguel.');
+    if (busy.current || sucesso) return;
+    if (!navigator.onLine) {
+      setMensagem('Você está sem conexão. Conecte-se à internet para salvar.');
+      return;
     }
-  };
-
-  const excluirAluguelHandler = async (id: string) => {
-    if (!id) return;
-
-    const ok = window.confirm(
-      'Tem certeza que deseja realizar a exclusão desse aluguel?'
-    );
-    if (!ok) return;
-
+    setMensagem('');
+    let dados;
+    try {
+      dados = montarAluguel(form);
+    } catch (error) {
+      setMensagem(error instanceof Error ? error.message : 'Confira os dados.');
+      return;
+    }
+    if (modo === 'editar' && !aluguel?.id) {
+      setMensagem('Aluguel não encontrado. Volte à lista.');
+      return;
+    }
+    busy.current = true;
+    setSalvando(true);
+    try {
+      if (modo === 'editar' && aluguel?.id)
+        await editarAluguel(aluguel.id, dados);
+      else await cadastrarAluguel(dados);
+      setSucesso(true);
+    } catch (error) {
+      setMensagem(mensagemErroAoSalvar(error));
+    } finally {
+      busy.current = false;
+      setSalvando(false);
+    }
+  }
+  async function excluirAluguelHandler(id: string) {
+    if (!navigator.onLine) {
+      setMensagem('Conecte-se à internet para excluir o aluguel.');
+      return;
+    }
+    // A confirmação é exibida pelo formulário, antes de chamar este handler.
+    if (busy.current || modo !== 'editar' || id !== aluguel?.id) return;
+    busy.current = true;
+    setSalvando(true);
+    setMensagem('');
     try {
       await excluirAluguel(id);
-      setMensagem('✅ Aluguel excluído com sucesso!');
-      setTimeout(() => {
-        router.push('/Aluguel/List');
-      }, 1000);
-    } catch {
-      setMensagem('❌ Erro ao excluir Aluguel!');
+      router.replace('/Aluguel/List');
+    } catch (error) {
+      setMensagem(mensagemErroOperacao(error, 'excluir o aluguel'));
+    } finally {
+      busy.current = false;
+      setSalvando(false);
     }
-  };
-
+  }
+  function reiniciar() {
+    setForm(criarForm());
+    setSucesso(false);
+    setMensagem('');
+  }
   return {
     form,
     setForm,
     handleSubmit,
     mensagem,
-    calcularValor,
+    setMensagem,
+    calcularValor: () => calcularValorForm(form),
     excluirAluguel: excluirAluguelHandler,
+    salvando,
+    sucesso,
+    reiniciar,
   };
 }

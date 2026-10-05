@@ -1,130 +1,45 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  listarAlugueisPaginado,
-  editarAluguel,
-} from '../services/aluguelService';
+'use client';
+import { useRef, useState } from 'react';
+import { editarAluguel } from '../services/aluguelService';
 import { Aluguel } from '../models/Aluguel';
-import { DocumentSnapshot, DocumentData } from 'firebase/firestore';
-
-const DEFAULT_STATUS: Aluguel['status'][] = [
-  'pendente',
-  'entregue',
-  'devolvido',
-];
-
+import { useAlugueis } from './AlugueisContext';
+import { mensagemErroOperacao } from '../services/saveError';
 export function useListaAlugueis(status?: Aluguel['status'][]) {
-  const statusFilter = status ?? DEFAULT_STATUS;
-  const statusKey = useMemo(
-    () => (Array.isArray(statusFilter) ? statusFilter.join('|') : ''),
-    [statusFilter]
-  );
-
-  const [alugueis, setAlugueis] = useState<Aluguel[]>([]);
-  const [carregando, setCarregando] = useState(true);
+  const data = useAlugueis();
   const [mensagem, setMensagem] = useState('');
-  const [cursor, setCursor] = useState<DocumentSnapshot<
-    Aluguel,
-    DocumentData
-  > | null>(null);
-  const [acabou, setAcabou] = useState(false);
+  const [erroAtualizacao, setErroAtualizacao] = useState(false);
   const [loadingIds, setLoadingIds] = useState<Set<string>>(new Set());
-
-  const inFlight = useRef<Set<string>>(new Set());
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const alugueisRef = useRef<Aluguel[]>([]);
-  const lastFetchKeyRef = useRef<string | null>(null);
-  const unmountedRef = useRef(false);
-
-  useEffect(() => {
-    alugueisRef.current = alugueis;
-  }, [alugueis]);
-
-  useEffect(() => {
-    unmountedRef.current = false;
-    if (lastFetchKeyRef.current === statusKey) return;
-    lastFetchKeyRef.current = statusKey;
-
-    (async () => {
-      setCarregando(true);
-      const { data, nextCursor } = await listarAlugueisPaginado({
-        statusIn: statusFilter,
-        pageSize: 50,
-      });
-      if (unmountedRef.current) return;
-
-      setAlugueis(data);
-      setCursor(nextCursor ?? null);
-      setAcabou(!nextCursor);
-      setCarregando(false);
-    })();
-
-    return () => {
-      unmountedRef.current = true;
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, [statusKey, statusFilter]);
-
-  const setLoadingFor = (id: string, on: boolean) =>
-    setLoadingIds(prev => {
-      const s = new Set(prev);
-      if (on) {
-        s.add(id);
-      } else {
-        s.delete(id);
-      }
-      return s;
-    });
-
-  const carregarMais = async () => {
-    if (acabou || cursor == null) return;
-    const { data, nextCursor } = await listarAlugueisPaginado({
-      statusIn: statusFilter,
-      pageSize: 50,
-      cursor,
-    });
-    setAlugueis(prev => [...prev, ...data]);
-    setCursor(nextCursor ?? null);
-    setAcabou(!nextCursor);
-  };
-
-  const atualizarStatus = async (id: string, statusNovo: Aluguel['status']) => {
-    setMensagem('');
-
-    const atual = alugueisRef.current.find(a => a.id === id);
-    if (!atual || atual.status === statusNovo) return;
-
+  const inFlight = useRef(new Set<string>());
+  async function atualizarStatus(id: string, statusNovo: Aluguel['status']) {
     if (inFlight.current.has(id)) return;
+    if (!navigator.onLine) {
+      setErroAtualizacao(true);
+      setMensagem('Conecte-se à internet para atualizar o status.');
+      return;
+    }
     inFlight.current.add(id);
-    setLoadingFor(id, true);
-
-    const anterior = atual.status;
-    setAlugueis(prev =>
-      prev.map(a => (a.id === id ? { ...a, status: statusNovo } : a))
-    );
-
+    setLoadingIds(new Set(inFlight.current));
+    setMensagem('');
     try {
       await editarAluguel(id, { status: statusNovo });
-      setMensagem('✅ Status atualizado com sucesso!');
-    } catch {
-      setAlugueis(prev =>
-        prev.map(a => (a.id === id ? { ...a, status: anterior } : a))
+      setErroAtualizacao(false);
+      setMensagem(
+        'Status atualizado. Seu dashboard já está atualizado também.'
       );
-      setMensagem('❌ Erro ao atualizar status.');
+    } catch (error) {
+      setErroAtualizacao(true);
+      setMensagem(mensagemErroOperacao(error, 'atualizar o status'));
     } finally {
       inFlight.current.delete(id);
-      setLoadingFor(id, false);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => setMensagem(''), 3000);
+      setLoadingIds(new Set(inFlight.current));
     }
-  };
-
+  }
   return {
-    alugueis,
-    carregando,
+    ...data,
+    alugueis: data.alugueis.filter(a => !status || status.includes(a.status)),
     mensagem,
+    erroAtualizacao,
     atualizarStatus,
     loadingIds,
-    carregarMais,
-    acabou,
   };
 }

@@ -1,92 +1,121 @@
-import { Aluguel } from '../models/Aluguel';
-import styles from '@/styles/rent/list/rentList.module.css';
-import { formatarDataSimples } from '@/utils/firebaseDate';
-import { formatarDistanciaLegivel } from '@/utils/aluguelUtils';
-import {
-  MdPhone,
-  MdTableRestaurant,
-  MdAttachMoney,
-  MdLocationOn,
-  MdKeyboardReturn,
-} from 'react-icons/md';
-import { FaTruckArrowRight } from 'react-icons/fa6';
-import { GiRolledCloth, GiPathDistance } from 'react-icons/gi';
+'use client';
 import Link from 'next/link';
-import { montserrat, openSans } from '@/fonts/fonts';
-
-type Props = {
+import {
+  FiMapPin,
+  FiCalendar,
+  FiArrowUpRight,
+  FiPhone,
+  FiCheck,
+  FiTruck,
+} from 'react-icons/fi';
+import { Aluguel } from '../models/Aluguel';
+import { money, fullDate, statusLabel, eventDate } from '@/utils/presentation';
+import { formatarDistanciaLegivel } from '@/utils/aluguelUtils';
+import styles from './list.module.css';
+export default function AluguelCard({
+  aluguel: a,
+  onStatusChange,
+  salvando = false,
+}: {
   aluguel: Aluguel;
-  onStatusChange: (id: string, novoStatus: Aluguel['status']) => void;
-};
-
-export default function AluguelCard({ aluguel, onStatusChange }: Props) {
-  const getStatusClass = (status: Aluguel['status']) => {
-    if (status === 'entregue') return styles.statusEntregue;
-    if (status === 'devolvido') return styles.statusDevolvido;
-    return styles.statusPendente;
-  };
-
+  onStatusChange: (id: string, status: Aluguel['status']) => void;
+  salvando?: boolean;
+}) {
+  const next = a.status === 'pendente' ? 'entregue' : 'devolvido';
+  const date = eventDate(
+    a.status === 'pendente' ? a.dataEntrega : a.dataDevolucao,
+    a.status === 'pendente' ? a.horaEntrega : a.horaDevolucao
+  );
+  const overdue =
+    a.status !== 'devolvido' && date && date.getTime() < Date.now();
   return (
     <li className={styles.card}>
-      <div className={styles.cardHeader}>
-        <div className={styles.nomeContainer}>
-          <h2 className={`${styles.nome} ${openSans.className}`}>
-            {aluguel.nomeCliente}
-          </h2>
-        </div>
-        <div className={styles.statusWrapper}>
-          <select
-            className={`${styles.statusSelect} ${getStatusClass(
-              aluguel.status
-            )}`}
-            value={aluguel.status ?? 'pendente'}
-            onChange={e =>
-              onStatusChange(aluguel.id!, e.target.value as Aluguel['status'])
-            }
-          >
-            <option value="pendente">Pendente</option>
-            <option value="entregue">Entregue</option>
-            <option value="devolvido">Devolvido</option>
-          </select>
-        </div>
-      </div>
-
-      <div className={styles.separator}></div>
-
-      <div className={`${styles.infoGrid} ${openSans.className}`}>
-        <MdPhone size={20} />
-        <span>{aluguel.telefoneCliente}</span>
-        <MdTableRestaurant size={20} />
-        <span>
-          Jogos: {aluguel.itens.jogos} / Cadeiras:{' '}
-          {aluguel.itens.cadeiraQuantidade}
+      <div className={styles.cardTop}>
+        <span className={styles.initial}>
+          {a.nomeCliente.charAt(0).toUpperCase()}
         </span>
-        <GiRolledCloth size={20} />
-        <span>Forros: {aluguel.itens.forroQuantidade}</span>
-        <MdAttachMoney size={20} />
-        <span>Total: R${aluguel.valor}</span>
-        <MdLocationOn size={20} />
-        <span>{aluguel.enderecoEntrega}</span>
-        <GiPathDistance size={20} />
-        <span>
-          Distância: {formatarDistanciaLegivel(Number(aluguel.distanciaKM))}
+        <div className={styles.client}>
+          <h2>{a.nomeCliente}</h2>
+          <a href={`tel:${a.telefoneCliente.replace(/\D/g, '')}`}>
+            <FiPhone size={10} />
+            {a.telefoneCliente}
+          </a>
+        </div>
+        <span className={`badge ${a.status}`}>
+          <i className="badge-dot" />
+          {statusLabel[a.status]}
         </span>
-        <FaTruckArrowRight size={20} />
-        <span>Entrega: {formatarDataSimples(aluguel.dataEntrega)}</span>
-        {aluguel.dataDevolucao && (
-          <>
-            <MdKeyboardReturn size={20} />
-            <span>Devolução: {formatarDataSimples(aluguel.dataDevolucao)}</span>
-          </>
-        )}
       </div>
-
-      <div className={styles.cardFooter}>
-        <button className={`${styles.detalhesBtn} ${montserrat.className}`}>
-          <Link href={`/Aluguel/Edit/${aluguel.id}`}
-          className={`${styles.dtlhBtn}`}>DETALHES</Link>
+      <div className={styles.itemRow}>
+        <span>
+          <strong>{a.itens.jogos}</strong> jogos
+        </span>
+        <span>
+          <strong>{a.itens.cadeiraQuantidade}</strong> cadeiras
+        </span>
+        <span>
+          <strong>{a.itens.forroQuantidade}</strong> forros
+        </span>
+      </div>
+      <div className={styles.cardInfo}>
+        <p>
+          <FiMapPin />
+          <span>{a.enderecoEntrega}</span>
+        </p>
+        <p>
+          <FiCalendar />
+          <span>
+            Entrega: <strong>{fullDate(a.dataEntrega)}</strong> {a.horaEntrega}
+          </span>
+        </p>
+        <p>
+          <FiCalendar />
+          <span>
+            Devolução: <strong>{fullDate(a.dataDevolucao)}</strong>{' '}
+            {a.horaDevolucao}
+          </span>
+        </p>
+      </div>
+      {overdue && (
+        <p className={styles.overdue}>
+          {a.status === 'pendente' ? 'Entrega' : 'Devolução'} em atraso. Confira
+          o status deste pedido.
+        </p>
+      )}
+      <details className={styles.details}>
+        <summary>Mais informações</summary>
+        <p>Distância: {formatarDistanciaLegivel(Number(a.distanciaKM) || 0)}</p>
+        <p>Frete: {a.frete ? money(a.valorFrete || 0) : 'Não incluso'}</p>
+        {a.observacoes && <p>Observações: {a.observacoes}</p>}
+      </details>
+      <div className={styles.cardBottom}>
+        <div>
+          <small>VALOR TOTAL</small>
+          <strong>{money(a.valor)}</strong>
+        </div>
+        <Link className="secondary" href={`/Aluguel/Edit/${a.id}`}>
+          Editar <FiArrowUpRight />
+        </Link>
+      </div>
+      {a.status !== 'devolvido' && (
+        <button
+          className={styles.advanceStatus}
+          disabled={salvando}
+          onClick={() => a.id && onStatusChange(a.id, next)}
+        >
+          {salvando ? (
+            'Atualizando…'
+          ) : a.status === 'pendente' ? (
+            <>
+              <FiTruck /> Marcar como entregue
+            </>
+          ) : (
+            <>
+              <FiCheck /> Concluir devolução
+            </>
+          )}
         </button>
-      </div>
+      )}
     </li>
   );
 }

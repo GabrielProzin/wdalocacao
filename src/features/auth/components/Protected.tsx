@@ -1,59 +1,31 @@
 'use client';
-
 import { ReactNode, useEffect, useState } from 'react';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
-
-function getAllowedUids() {
-  const multi = (process.env.NEXT_PUBLIC_ALLOWED_UIDS ?? '')
-    .split(',')
-    .map(s => s.trim())
-    .filter(Boolean);
-  const single = (process.env.NEXT_PUBLIC_ALLOWED_UID ?? '').trim();
-  return [...multi, ...(single ? [single] : [])];
-}
-
+import { getAllowedUids } from '../utils/allowedUids';
 export default function Protected({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false);
+  const [user, setUser] = useState<User | null | undefined>(undefined);
   const pathname = usePathname();
   const router = useRouter();
-
+  const allowed = !!user && getAllowedUids().includes(user.uid);
+  const login = pathname.startsWith('/login');
+  useEffect(() => onAuthStateChanged(auth, setUser), []);
   useEffect(() => {
-    const allowedUids = getAllowedUids();
-
-    const unsub = onAuthStateChanged(auth, async user => {
-      const isLogin = pathname?.startsWith('/login');
-
-      if (isLogin) {
-        if (user && allowedUids.includes(user.uid)) {
-          setReady(true);
-          router.replace('/');
-        } else {
-          setReady(true);
-        }
-        return;
-      }
-
-      if (!user) {
-        setReady(true);
-        router.replace('/login');
-        return;
-      }
-
-      if (!allowedUids.includes(user.uid)) {
-        await signOut(auth);
-        setReady(true);
-        router.replace('/login');
-        return;
-      }
-
-      setReady(true);
-    });
-
-    return () => unsub();
-  }, [pathname, router]);
-
-  if (!ready) return <div style={{ padding: 16 }}>Carregando…</div>;
-  return <>{children}</>;
+    if (user === undefined) return;
+    if (login && allowed) router.replace('/home');
+    if (!login && !allowed) router.replace('/login');
+    if (user && !allowed) void signOut(auth);
+  }, [user, allowed, login, router]);
+  if (user === undefined || (!login && !allowed) || (login && allowed))
+    return (
+      <div
+        className="state"
+        role="status"
+        style={{ maxWidth: 400, margin: '15vh auto' }}
+      >
+        Preparando seu espaço…
+      </div>
+    );
+  return children;
 }

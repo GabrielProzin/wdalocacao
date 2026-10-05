@@ -19,6 +19,8 @@ import {
   WithFieldValue,
   UpdateData,
   QueryDocumentSnapshot,
+  onSnapshot,
+  FirestoreError,
 } from 'firebase/firestore';
 import { Aluguel } from '../models/Aluguel';
 
@@ -46,20 +48,32 @@ const aluguelConverter: FirestoreDataConverter<Aluguel> = {
     const dataEntrega =
       d?.dataEntrega instanceof Timestamp
         ? d.dataEntrega.toDate()
-        : d?.dataEntrega ?? null;
+        : typeof d?.dataEntrega === 'string' ||
+            typeof d?.dataEntrega === 'number'
+          ? new Date(d.dataEntrega)
+          : null;
 
     const dataDevolucao =
       d?.dataDevolucao instanceof Timestamp
         ? d.dataDevolucao.toDate()
-        : d?.dataDevolucao ?? null;
+        : typeof d?.dataDevolucao === 'string' ||
+            typeof d?.dataDevolucao === 'number'
+          ? new Date(d.dataDevolucao)
+          : null;
 
     const base = d as Omit<Aluguel, 'id' | 'dataEntrega' | 'dataDevolucao'>;
 
     return {
-      id: snap.id,
       ...base,
-      dataEntrega,
-      dataDevolucao,
+      id: snap.id,
+      dataEntrega:
+        dataEntrega && Number.isFinite(dataEntrega.getTime())
+          ? dataEntrega
+          : null,
+      dataDevolucao:
+        dataDevolucao && Number.isFinite(dataDevolucao.getTime())
+          ? dataDevolucao
+          : null,
     };
   },
 };
@@ -67,6 +81,23 @@ const aluguelConverter: FirestoreDataConverter<Aluguel> = {
 const aluguelCollection = collection(db, 'aluguel').withConverter(
   aluguelConverter
 );
+
+// Uma única assinatura compartilhada, sem limite silencioso ou índice composto.
+export function observarAlugueis(
+  onData: (alugueis: Aluguel[]) => void,
+  onError: (error: FirestoreError) => void
+) {
+  return onSnapshot(
+    aluguelCollection,
+    { includeMetadataChanges: true },
+    snapshot => {
+      // Um cache recém-criado vazio não representa o resultado da consulta.
+      if (snapshot.metadata.fromCache && snapshot.empty) return;
+      onData(snapshot.docs.map(document => document.data()));
+    },
+    onError
+  );
+}
 
 export async function criarAluguel(aluguel: Omit<Aluguel, 'id'>) {
   return addDoc(aluguelCollection, aluguel as Aluguel);
