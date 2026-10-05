@@ -26,6 +26,7 @@ import {
   statusLabel,
 } from '@/utils/presentation';
 import styles from './overview.module.css';
+import ResumoDespesas from '@/features/despesas/ResumoDespesas';
 export default function DashboardPage() {
   const { alugueis, carregando, erro, recarregar } = useAlugueis();
   const [periodo, setPeriodo] = useState(() => monthKey(new Date()));
@@ -81,6 +82,7 @@ export default function DashboardPage() {
           />
         </label>
       </div>
+      <ResumoDespesas periodo={periodo} />
       {erro ? (
         <div className="state">
           <FiRefreshCw size={32} />

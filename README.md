@@ -93,6 +93,12 @@ do Firestore também precisam permitir acesso ao usuário autorizado.
   edição e avanço do status para entregue ou devolvido.
 - `/Aluguel/Edit/[id]`: mesmo formulário de cadastro, preenchido com os dados
   existentes. Datas e horários opcionais podem permanecer vazios.
+- `/Despesas`: despesas independentes dos aluguéis, com valor, tipo, data,
+  observação opcional e quantidade opcional de litros para combustível.
+  Permite cadastrar, editar e excluir com confirmação, além de filtrar por mês.
+
+O dashboard também exibe despesas por mês e por tipo. Não calcula lucro,
+pois ainda não existe controle de recebimentos.
 
 O dashboard agrupa os valores pelo mês da entrega. São **valores contratados**,
 incluindo frete; o sistema ainda não registra pagamentos, despesas ou lucro.
@@ -132,7 +138,26 @@ e mudança de status distinguem falhas de rede, sessão e permissão.
 O layout foi conferido nas larguras de 360, 390, 430 e 1280 pixels. Em telas até
 480 pixels, datas e horários ocupam linhas separadas, e os botões do formulário
 não cobrem os campos. A emulação ainda deve ser complementada pelo teste em
-celular físico. A suíte conta com 28 testes automatizados.
+celular físico. A suíte conta com 34 testes automatizados.
+
+### Dados das despesas
+
+A coleção `despesas` é criada automaticamente no primeiro cadastro autorizado.
+Não é necessário cadastrar tabelas, índices compostos ou documentos vazios.
+Cada documento contém `tipo`, `valorCentavos` (inteiro), `data` (`AAAA-MM-DD`),
+`litros` (número ou `null`) e `observacao`. Datas representam o dia local do gasto;
+o agrupamento mensal não depende da conversão de timestamps ou do fuso horário.
+
+As regras do Firestore precisam autorizar a coleção separadamente da coleção
+`aluguel`. A conta liberada na interface também deve ser liberada no banco.
+Valores monetários são armazenados em centavos; o formulário aceita vírgula
+ou ponto decimal. Campo de litros só é gravado para combustível.
+
+O arquivo `firestore.rules` registra as regras publicadas no projeto Firebase,
+incluindo o acesso da conta de teste à coleção de despesas e a validação dos
+campos. O deploy da Vercel publica o site; alterações nesse arquivo precisam
+ser publicadas separadamente no Firestore. Ao liberar a conta definitiva,
+atualize também o UID nas regras, além das variáveis de acesso da interface.
 
 O login mantém a sessão no navegador e permite preenchimento por gerenciador de
 senhas. Para criar a conta definitiva, cadastre o usuário no Authentication,

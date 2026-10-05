@@ -6,6 +6,7 @@ import {
   criarForm,
   montarAluguel,
 } from '@/features/aluguel/services/formService';
+vi.mock('@/features/despesas/ResumoDespesas', () => ({ default: () => null }));
 vi.mock('@/features/aluguel/hooks/AlugueisContext', () => ({
   useAlugueis: vi.fn(),
 }));
