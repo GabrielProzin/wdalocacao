@@ -18,6 +18,8 @@ O objetivo é substituir as anotações em papel por um **sistema web responsivo
 - Cadastro de clientes  
 - Registro de aluguéis com: datas de entrega/devolução, valores, distância e status  
 - Controle de quantidade de jogos (mesas/cadeiras) e forros  
+- Dashboard com resumo dos aluguéis e despesas por mês
+- Cadastro, edição e exclusão de despesas, com litros opcionais para combustível
 - Interface **mobile-first**, otimizada para uso no celular  
 
 ---
@@ -101,7 +103,7 @@ O dashboard também exibe despesas por mês e por tipo. Não calcula lucro,
 pois ainda não existe controle de recebimentos.
 
 O dashboard agrupa os valores pelo mês da entrega. São **valores contratados**,
-incluindo frete; o sistema ainda não registra pagamentos, despesas ou lucro.
+incluindo frete; o sistema ainda não registra pagamentos ou calcula lucro.
 Jogos em uso correspondem aos aluguéis com status `entregue`; não há estoque
 total fictício. Agenda e aluguéis em aberto consideram todos os meses.
 
