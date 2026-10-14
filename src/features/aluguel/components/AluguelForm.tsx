@@ -16,8 +16,9 @@ import { Aluguel } from '../models/Aluguel';
 import { useAluguelForm } from '../hooks/useAluguelForm';
 import {
   AluguelFormData,
-  PRECO_JOGO,
-  PRECO_FORRO,
+  totalMesas,
+  totalCadeiras,
+  valorNumerico,
   validarEtapa,
 } from '../services/formService';
 import {
@@ -92,7 +93,7 @@ export default function AluguelForm({
     } else await handleSubmit(e);
   }
   const input = (
-    id: Exclude<keyof AluguelFormData, 'frete' | 'status'>,
+    id: Exclude<keyof AluguelFormData, 'frete' | 'status' | 'modoValor'>,
     label: string,
     type = 'text',
     extra: React.InputHTMLAttributes<HTMLInputElement> = {}
@@ -125,7 +126,8 @@ export default function AluguelForm({
         </p>
         <div className={styles.successSummary}>
           <span>
-            {Number(form.jogos)} jogos · {Number(form.forroQuantidade)} forros
+            {totalMesas(form)} mesas · {totalCadeiras(form)} cadeiras ·{' '}
+            {Number(form.forroQuantidade)} forros
           </span>
           <strong>{money(calcularValor())}</strong>
         </div>
@@ -259,7 +261,7 @@ export default function AluguelForm({
                 </div>
                 <div className={styles.twoCols}>
                   {input('jogos', 'Quantidade de jogos *', 'number', {
-                    min: 1,
+                    min: 0,
                     max: 100,
                     step: 1,
                     inputMode: 'numeric',
@@ -272,16 +274,77 @@ export default function AluguelForm({
                     inputMode: 'numeric',
                   })}
                 </div>
+                <p className={styles.fieldHint}>
+                  Pode deixar jogos em zero para alugar apenas itens avulsos.
+                </p>
+                <div className={styles.twoCols}>
+                  {input('mesasAvulsas', 'Mesas avulsas', 'number', {
+                    min: 0,
+                    max: 1000,
+                    step: 1,
+                    inputMode: 'numeric',
+                    required: true,
+                  })}
+                  {input('cadeirasAvulsas', 'Cadeiras avulsas', 'number', {
+                    min: 0,
+                    max: 1000,
+                    step: 1,
+                    inputMode: 'numeric',
+                    required: true,
+                  })}
+                </div>
                 <div className={styles.itemNote}>
                   <span>1 jogo = 1 mesa + 4 cadeiras</span>
-                  <span>
-                    Jogo {money(PRECO_JOGO)} · Forro {money(PRECO_FORRO)}
-                  </span>
+                  <span>Itens avulsos são adicionais aos jogos.</span>
                 </div>
                 <div className={styles.hint}>
-                  <FiCheckCircle /> {Number(form.jogos) || 0} mesas e{' '}
-                  {(Number(form.jogos) || 0) * 4} cadeiras neste aluguel.
+                  <FiCheckCircle /> {totalMesas(form)} mesas e{' '}
+                  {totalCadeiras(form)} cadeiras neste aluguel.
                 </div>
+                <div className={styles.divider} />
+                <div className={styles.subheading}>
+                  <FiClipboard />
+                  <strong>Como cobrar</strong>
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="modoValor">Cálculo do valor</label>
+                  <select
+                    id="modoValor"
+                    value={form.modoValor}
+                    onChange={e =>
+                      update(
+                        'modoValor',
+                        e.target.value as AluguelFormData['modoValor']
+                      )
+                    }
+                  >
+                    <option value="automatico">
+                      Calcular pelos preços dos itens
+                    </option>
+                    <option value="combinado">
+                      Definir um valor combinado
+                    </option>
+                  </select>
+                </div>
+                {form.modoValor === 'combinado' && (
+                  <>
+                    {input(
+                      'valorCombinado',
+                      'Valor combinado dos itens (R$) *',
+                      'text',
+                      {
+                        inputMode: 'decimal',
+                        required: true,
+                        maxLength: 10,
+                        placeholder: 'Ex.: 300,00',
+                      }
+                    )}
+                    <p className={styles.fieldHint}>
+                      Esse valor cobre todos os itens. O frete, se incluído,
+                      será somado à parte.
+                    </p>
+                  </>
+                )}
               </>
             )}
             {step === 1 && (
@@ -452,20 +515,44 @@ export default function AluguelForm({
             <strong>Resumo do aluguel</strong>
           </div>
           <p className={styles.summaryHint}>Seu pedido, sem surpresas.</p>
-          <div className={styles.summaryLine}>
-            <span>
-              {Number(form.jogos) || 0} jogos × {money(PRECO_JOGO)}
-            </span>
-            <strong>{money((Number(form.jogos) || 0) * PRECO_JOGO)}</strong>
-          </div>
-          <div className={styles.summaryLine}>
-            <span>
-              {Number(form.forroQuantidade) || 0} forros × {money(PRECO_FORRO)}
-            </span>
-            <strong>
-              {money((Number(form.forroQuantidade) || 0) * PRECO_FORRO)}
-            </strong>
-          </div>
+          <p className={styles.summaryHint}>
+            {totalMesas(form)} mesas · {totalCadeiras(form)} cadeiras ·{' '}
+            {Number(form.forroQuantidade) || 0} forros
+          </p>
+          {form.modoValor === 'combinado' ? (
+            <div className={styles.summaryLine}>
+              <span>Valor combinado dos itens</span>
+              <strong>{money(valorNumerico(form.valorCombinado))}</strong>
+            </div>
+          ) : (
+            <>
+              {(
+                [
+                  ['Jogos', form.jogos, form.precoJogo],
+                  ['Forros', form.forroQuantidade, form.precoForro],
+                  ['Mesas avulsas', form.mesasAvulsas, form.precoMesa],
+                  ['Cadeiras avulsas', form.cadeirasAvulsas, form.precoCadeira],
+                ] as const
+              ).map(
+                ([label, quantidade, preco]) =>
+                  Number(quantidade) > 0 && (
+                    <div className={styles.summaryLine} key={label}>
+                      <span>
+                        {label}: {Number(quantidade)} ×{' '}
+                        {money(valorNumerico(preco))}
+                      </span>
+                      <strong>
+                        {money(
+                          (Number(quantidade) *
+                            Math.round(valorNumerico(preco) * 100)) /
+                            100
+                        )}
+                      </strong>
+                    </div>
+                  )
+              )}
+            </>
+          )}
           <div className={styles.summaryLine}>
             <span>Frete</span>
             <strong>
@@ -477,7 +564,10 @@ export default function AluguelForm({
             <strong>{money(calcularValor())}</strong>
           </div>
           <p className={styles.summaryFoot}>
-            <FiCheckCircle /> O total é calculado automaticamente.
+            <FiCheckCircle />{' '}
+            {form.modoValor === 'combinado'
+              ? 'Valor combinado dos itens, mais o frete quando incluído.'
+              : 'O total é calculado pelos preços dos itens.'}
           </p>
         </aside>
       </form>

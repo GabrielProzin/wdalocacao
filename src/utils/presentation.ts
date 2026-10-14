@@ -1,4 +1,7 @@
 import { Aluguel } from '@/features/aluguel/models/Aluguel';
+export function resumoItens(a: Aluguel) {
+  return `${a.itens.mesaQuantidade} mesas · ${a.itens.cadeiraQuantidade} cadeiras · ${a.itens.forroQuantidade} forros`;
+}
 export const compactMoney = (value: number) =>
   new Intl.NumberFormat('pt-BR', {
     style: 'currency',

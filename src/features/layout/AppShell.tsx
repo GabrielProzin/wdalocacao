@@ -10,6 +10,7 @@ import {
   FiLogOut,
   FiArrowUpRight,
   FiDollarSign,
+  FiSettings,
 } from 'react-icons/fi';
 import { auth } from '@/lib/auth';
 import { AlugueisProvider } from '@/features/aluguel/hooks/AlugueisContext';
@@ -20,6 +21,7 @@ const nav = [
   { href: '/Aluguel/List', label: 'Aluguéis', Icon: FiList },
   { href: '/Aluguel/New', label: 'Novo aluguel', Icon: FiPlus },
   { href: '/Despesas', label: 'Despesas', Icon: FiDollarSign },
+  { href: '/Configuracoes', label: 'Configurações', Icon: FiSettings },
 ];
 export default function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -94,15 +96,17 @@ export default function AppShell({ children }: { children: ReactNode }) {
               </Link>
               <div className={styles.breadcrumb}>
                 WDA Locação <span>/</span>{' '}
-                {pathname.startsWith('/Despesas')
-                  ? 'Despesas'
-                  : pathname.includes('/New')
-                    ? 'Novo aluguel'
-                    : pathname.includes('/Edit')
-                      ? 'Editar aluguel'
-                      : pathname.includes('/List')
-                        ? 'Aluguéis'
-                        : 'Visão geral'}
+                {pathname.startsWith('/Configuracoes')
+                  ? 'Configurações'
+                  : pathname.startsWith('/Despesas')
+                    ? 'Despesas'
+                    : pathname.includes('/New')
+                      ? 'Novo aluguel'
+                      : pathname.includes('/Edit')
+                        ? 'Editar aluguel'
+                        : pathname.includes('/List')
+                          ? 'Aluguéis'
+                          : 'Visão geral'}
               </div>
               <div className={styles.headerRight}>
                 <span className={styles.headerNote}>

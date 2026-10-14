@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Aluguel } from '../models/Aluguel';
 import {
   cadastrarAluguel,
@@ -12,6 +12,7 @@ import {
   montarAluguel,
 } from '../services/formService';
 import { useRouter } from 'next/navigation';
+import { lerPrecosPadrao } from '../services/precosPadrao';
 import {
   mensagemErroAoSalvar,
   mensagemErroOperacao,
@@ -21,6 +22,12 @@ export function useAluguelForm(
   modo: 'cadastro' | 'editar' = 'cadastro'
 ) {
   const [form, setForm] = useState(() => criarForm(aluguel));
+  useEffect(() => {
+    if (!aluguel && modo === 'cadastro') {
+      const precos = lerPrecosPadrao();
+      if (precos) setForm(previous => ({ ...previous, ...precos }));
+    }
+  }, [aluguel, modo]);
   const [mensagem, setMensagem] = useState('');
   const [salvando, setSalvando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
@@ -80,7 +87,7 @@ export function useAluguelForm(
     }
   }
   function reiniciar() {
-    setForm(criarForm());
+    setForm({ ...criarForm(), ...lerPrecosPadrao() });
     setSucesso(false);
     setMensagem('');
   }

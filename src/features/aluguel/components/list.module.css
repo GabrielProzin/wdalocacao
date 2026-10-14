@@ -148,6 +148,7 @@
   padding: 4px 7px;
 }
 .itemRow {
+  flex-wrap: wrap;
   background: #f6f8f5;
   border-radius: 9px;
   padding: 13px 11px;

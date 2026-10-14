@@ -21,18 +21,18 @@ import {
 } from './services/dashboardService';
 import {
   money,
-  compactMoney,
   dateLabel,
   statusLabel,
+  resumoItens,
 } from '@/utils/presentation';
 import styles from './overview.module.css';
 import ResumoDespesas from '@/features/despesas/ResumoDespesas';
+import { MonthlyChart, StatusChart } from './components/DashboardCharts';
 export default function DashboardPage() {
   const { alugueis, carregando, erro, recarregar } = useAlugueis();
   const [periodo, setPeriodo] = useState(() => monthKey(new Date()));
   const stats = calcularDashboardStats(alugueis, periodo);
   const agenda = proximosCompromissos(alugueis);
-  const max = Math.max(...stats.historico.map(p => p.valor), 1);
   const recentes = [...alugueis]
     .sort(
       (a, b) =>
@@ -144,95 +144,22 @@ export default function DashboardPage() {
                 <FiPackage />
               </div>
               <strong>{stats.jogosEmUso.toString().padStart(2, '0')}</strong>
-              <small>Em aluguéis entregues · {stats.forrosEmUso} forros</small>
+              <small>
+                Em aluguéis entregues · {stats.mesasEmUso} mesas ·{' '}
+                {stats.cadeirasEmUso} cadeiras · {stats.forrosEmUso} forros
+              </small>
             </div>
           </div>
           <div className={styles.analyticsGrid}>
-            <section className={`panel ${styles.chartPanel}`}>
-              <div className="section-heading">
-                <div>
-                  <h2>Seu negócio ao longo dos meses</h2>
-                  <p className={styles.caption}>
-                    Valor dos aluguéis por mês de entrega
-                  </p>
-                </div>
-                <span className={styles.legend}>
-                  <i /> Últimos 6 meses
-                </span>
-              </div>
-              <div className={styles.chartHeader}>
-                <strong>{money(stats.receitaMensal)}</strong>
-                <span>Total do mês selecionado</span>
-              </div>
-              <figure className={styles.chart}>
-                <figcaption className="visually-hidden">
-                  Valores contratados nos seis meses encerrados no período
-                  selecionado.
-                </figcaption>
-                <div className={styles.bars}>
-                  {stats.historico.map((p, i) => (
-                    <div className={styles.barColumn} key={p.key}>
-                      <span className={styles.barValue} title={money(p.valor)}>
-                        {compactMoney(p.valor)}
-                      </span>
-                      <div className={styles.barTrack}>
-                        <div
-                          title={`${p.key}: ${money(p.valor)}`}
-                          className={`${styles.bar} ${i === 5 ? styles.lastBar : ''}`}
-                          style={{ height: `${(p.valor / max) * 100}%` }}
-                        />
-                      </div>
-                      <span className={i === 5 ? styles.selectedMonth : ''}>
-                        {p.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </figure>
-              <p className={styles.chartNote}>
-                Valores contratados. O cadastro atual não registra pagamentos
-                recebidos.
-              </p>
-            </section>
-            <section className={`panel ${styles.distribution}`}>
-              <div className="section-heading">
-                <h2>Como está o mês?</h2>
-                <FiActivity className="muted" />
-              </div>
-              <p className={styles.bigCount}>
-                {stats.locacoesNoMes}
-                <span>
-                  {stats.locacoesNoMes === 1 ? 'aluguel' : 'aluguéis'} no
-                  período
-                </span>
-              </p>
-              <div className={styles.statusBar} aria-hidden="true">
-                {Object.entries(stats.status).map(([status, count]) => (
-                  <span
-                    key={status}
-                    className={styles[status]}
-                    style={{
-                      width: `${stats.locacoesNoMes ? (count / stats.locacoesNoMes) * 100 : 0}%`,
-                    }}
-                  />
-                ))}
-              </div>
-              <div className={styles.statusRows}>
-                {Object.entries(stats.status).map(([status, count]) => (
-                  <div key={status}>
-                    <span>
-                      <i className={styles[status]} />
-                      {statusLabel[status as keyof typeof statusLabel]}
-                    </span>
-                    <strong>{count.toString().padStart(2, '0')}</strong>
-                  </div>
-                ))}
-              </div>
-              <div className={styles.ticket}>
-                <span>Valor médio por aluguel</span>
-                <strong>{money(stats.ticketMedio)}</strong>
-              </div>
-            </section>
+            <MonthlyChart
+              historico={stats.historico}
+              receitaMensal={stats.receitaMensal}
+            />
+            <StatusChart
+              status={stats.status}
+              total={stats.locacoesNoMes}
+              ticketMedio={stats.ticketMedio}
+            />
           </div>
           <div className={styles.bottomGrid}>
             <section className="panel">
@@ -269,7 +196,7 @@ export default function DashboardPage() {
                         <div className={styles.eventInfo}>
                           <strong>{aluguel.nomeCliente}</strong>
                           <span>
-                            {tipo} · {aluguel.itens.jogos} jogos
+                            {tipo} · {resumoItens(aluguel)}
                           </span>
                         </div>
                         <div className={styles.eventDate}>
@@ -323,7 +250,7 @@ export default function DashboardPage() {
                       <div>
                         <strong>{a.nomeCliente}</strong>
                         <small>
-                          {dateLabel(a.dataEntrega)} · {a.itens.jogos} jogos
+                          {dateLabel(a.dataEntrega)} · {resumoItens(a)}
                         </small>
                       </div>
                       <div className={styles.recentValue}>

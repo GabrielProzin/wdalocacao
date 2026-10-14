@@ -50,6 +50,14 @@ export function calcularDashboardStats(
     ).size,
     ativos: alugueis.filter(a => a.status !== 'devolvido').length,
     jogosEmUso: emUso.reduce((s, a) => s + (Number(a.itens.jogos) || 0), 0),
+    mesasEmUso: emUso.reduce(
+      (s, a) => s + (Number(a.itens.mesaQuantidade) || 0),
+      0
+    ),
+    cadeirasEmUso: emUso.reduce(
+      (s, a) => s + (Number(a.itens.cadeiraQuantidade) || 0),
+      0
+    ),
     forrosEmUso: emUso.reduce(
       (s, a) => s + (Number(a.itens.forroQuantidade) || 0),
       0

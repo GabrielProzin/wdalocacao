@@ -51,6 +51,9 @@ export default function AluguelCard({
           <strong>{a.itens.jogos}</strong> jogos
         </span>
         <span>
+          <strong>{a.itens.mesaQuantidade}</strong> mesas
+        </span>
+        <span>
           <strong>{a.itens.cadeiraQuantidade}</strong> cadeiras
         </span>
         <span>
@@ -86,6 +89,9 @@ export default function AluguelCard({
         <summary>Mais informações</summary>
         <p>Distância: {formatarDistanciaLegivel(Number(a.distanciaKM) || 0)}</p>
         <p>Frete: {a.frete ? money(a.valorFrete || 0) : 'Não incluso'}</p>
+        {a.cobranca?.modo === 'combinado' && (
+          <p>Valor combinado dos itens: {money(a.cobranca.valorCombinado)}</p>
+        )}
         {a.observacoes && <p>Observações: {a.observacoes}</p>}
       </details>
       <div className={styles.cardBottom}>

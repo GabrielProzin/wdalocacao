@@ -1,0 +1,282 @@
+.panel {
+  min-width: 0;
+  padding: 26px;
+  border: 1px solid #e3ebe6;
+  border-radius: 20px;
+  background: linear-gradient(150deg, #fff 65%, #f8fbf9);
+  box-shadow: 0 5px 24px #163c2f04;
+}
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 23px;
+}
+.heading h2 {
+  font-size: 17px;
+  line-height: 1.4;
+  letter-spacing: -0.4px;
+}
+.eyebrow {
+  color: #66877b;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  margin-bottom: 8px;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: #eff6f2;
+  color: #258573;
+}
+.chartTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.amount {
+  font-family: 'Manrope', sans-serif;
+  font-size: 32px;
+  letter-spacing: -1.3px;
+  font-weight: 800;
+}
+.chartTop p {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  color: #527969;
+  padding: 7px 9px;
+  border-radius: 20px;
+  background: #f0f6f2;
+}
+.pill i,
+.legendDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #258573;
+  flex-shrink: 0;
+}
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 19px;
+  font-size: 11px;
+  min-height: 28px;
+}
+.detail span {
+  color: var(--muted);
+}
+.detail strong {
+  color: #258573;
+  background: #edf6f1;
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+.figure {
+  margin: 3px 0 0;
+}
+.areaChart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.gridLine {
+  stroke: #e4ece7;
+  stroke-dasharray: 3 5;
+}
+.axisLabel {
+  fill: #899a93;
+  font-size: 16px;
+}
+.trendLine {
+  fill: none;
+  stroke: #258573;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.point {
+  fill: #fff;
+  stroke: #258573;
+  stroke-width: 2.5;
+}
+.crosshair {
+  stroke: #94b6a7;
+  stroke-dasharray: 4 5;
+}
+.months {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-left: 9.7%;
+  gap: 3px;
+}
+.months button {
+  min-width: 0;
+  padding: 7px 0;
+  min-height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #82978c;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: background 0.15s;
+}
+.months button:hover,
+.months .activeMonth {
+  background: #eaf4ee;
+  color: #217762;
+  font-weight: 700;
+}
+.months button:focus-visible {
+  outline: 2px solid #258573;
+  outline-offset: 2px;
+}
+.footnote {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  border-top: 1px solid #e8efea;
+  padding-top: 16px;
+  margin-top: 20px;
+  font-size: 9px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.emptyNote {
+  color: #84958c;
+  font-size: 10px;
+  margin-top: 13px;
+  line-height: 1.6;
+}
+.donutWrap {
+  width: 180px;
+  max-width: 100%;
+  margin: -4px auto 18px;
+  position: relative;
+}
+.donut {
+  width: 100%;
+  display: block;
+}
+.donutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+.donutCenter strong {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 38px;
+  letter-spacing: -1.5px;
+}
+.donutCenter span {
+  font-size: 9px;
+  color: var(--muted);
+}
+.statusList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.statusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  background: #f7f9f7;
+  font-size: 11px;
+}
+.statusRow > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5d7369;
+}
+.statusRow i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.statusRow > div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.statusRow small {
+  font-size: 10px;
+  color: #8b9a92;
+}
+.statusRow strong {
+  font-size: 12px;
+  min-width: 18px;
+  text-align: right;
+}
+.ticket {
+  margin-top: 18px;
+  padding-top: 17px;
+  border-top: 1px solid #e8efea;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.ticket strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+@media (max-width: 760px) {
+  .panel {
+    padding: 22px 18px;
+  }
+  .heading h2 {
+    font-size: 16px;
+  }
+  .amount {
+    font-size: 29px;
+  }
+  .axisLabel {
+    font-size: 20px;
+  }
+  .months button {
+    font-size: 11px;
+    min-height: 40px;
+  }
+  .footnote {
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .months button {
+    transition: none;
+  }
+}

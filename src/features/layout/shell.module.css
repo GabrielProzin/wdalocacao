@@ -269,7 +269,8 @@
   }
   .mobileNav a {
     min-height: 48px;
-    width: 24%;
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,26 +1,28 @@
-# 🪑 Sistema de Locação de Mesas e Cadeiras  
+# 🪑 Sistema de Locação de Mesas e Cadeiras
 
 Projeto desenvolvido para auxiliar no **gerenciamento de aluguéis** de mesas, cadeiras e forros.  
-O objetivo é substituir as anotações em papel por um **sistema web responsivo**, acessível pelo celular, com interface simples e prática.  
+O objetivo é substituir as anotações em papel por um **sistema web responsivo**, acessível pelo celular, com interface simples e prática.
 
 ---
 
 ## 🚀 Tecnologias utilizadas
-- **Next.js (React)** – Frontend moderno, rápido e componentizado  
-- **Firebase**  
-  - Firestore → Banco de dados em nuvem  
-  - Authentication → Controle de login seguro (mesmo sendo uso interno)  
-- **Vercel** – Hospedagem e deploy contínuo  
+
+- **Next.js (React)** – Frontend moderno, rápido e componentizado
+- **Firebase**
+  - Firestore → Banco de dados em nuvem
+  - Authentication → Controle de login seguro (mesmo sendo uso interno)
+- **Vercel** – Hospedagem e deploy contínuo
 
 ---
 
 ## 📱 Funcionalidades
-- Cadastro de clientes  
-- Registro de aluguéis com: datas de entrega/devolução, valores, distância e status  
-- Controle de quantidade de jogos (mesas/cadeiras) e forros  
+
+- Cadastro de clientes
+- Registro de aluguéis com: datas de entrega/devolução, valores, distância e status
+- Controle de quantidade de jogos (mesas/cadeiras) e forros
 - Dashboard com resumo dos aluguéis e despesas por mês
 - Cadastro, edição e exclusão de despesas, com litros opcionais para combustível
-- Interface **mobile-first**, otimizada para uso no celular  
+- Interface **mobile-first**, otimizada para uso no celular
 
 ---
 
@@ -86,11 +88,34 @@ do Firestore também precisam permitir acesso ao usuário autorizado.
 
 ## Fluxo de uso
 
+### Preços e itens avulsos
+
+No cadastro e na edição, é possível combinar jogos completos (1 mesa e 4
+cadeiras), mesas avulsas, cadeiras avulsas e forros. Deixe jogos em zero para
+pedidos apenas de itens avulsos. As quantidades avulsas são somadas às dos jogos.
+
+Em **Como cobrar**, escolha calcular pelos preços unitários ou definir um
+valor combinado para todos os itens. Exemplo: 0 jogos, 0 mesas avulsas, 40
+cadeiras avulsas e valor combinado de R$ 300. O frete é sempre somado à parte,
+quando marcado. No cálculo automático, informe um preço positivo para cada
+tipo de item escolhido. Valores monetários dos itens aceitam vírgula ou ponto,
+com até duas casas decimais.
+
+O menu **Configurações**, com ícone de engrenagem, permite editar os preços
+de jogos, forros, mesas e cadeiras avulsas fora do cadastro de aluguel.
+**Salvar preços** reutiliza esses preços nos próximos cadastros neste navegador,
+por meio de armazenamento local. O fluxo de aluguel não contém campos de
+configuração de preços unitários.
+Esses padrões não são sincronizados entre dispositivos. Os preços e a forma
+de cobrança de cada aluguel ficam gravados no Firestore junto do registro.
+Editar preços padrão não altera o histórico. Registros antigos sem metadados
+de cobrança são abertos como valor combinado, preservando seu total original.
+Não é necessário alterar as regras atuais da coleção `aluguel`.
+
 - `/home`: visão geral com período mensal, valores contratados, aluguéis em
   aberto, jogos em uso e agenda de entregas/devoluções.
 - `/Aluguel/New`: cadastro em três etapas (cliente e itens, entrega, revisão).
-  Os campos, o modelo de dados e os preços originais foram mantidos:
-  R$ 15 por jogo e R$ 5 por forro.
+  Os preços iniciais são R$ 15 por jogo e R$ 5 por forro e podem ser alterados.
 - `/Aluguel/List`: busca por cliente/telefone/endereço, filtro de status e mês,
   edição e avanço do status para entregue ou devolvido.
 - `/Aluguel/Edit/[id]`: mesmo formulário de cadastro, preenchido com os dados

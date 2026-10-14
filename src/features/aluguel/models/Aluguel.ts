@@ -10,6 +10,14 @@ export type Aluguel = {
     forroQuantidade: number;
   };
   valor: number;
+  cobranca?: {
+    modo: 'automatico' | 'combinado';
+    precoJogo: number;
+    precoForro: number;
+    precoMesa: number;
+    precoCadeira: number;
+    valorCombinado: number;
+  };
   frete?: boolean;
   distanciaKM?: number;
   valorFrete?: number;

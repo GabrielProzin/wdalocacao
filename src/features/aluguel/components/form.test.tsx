@@ -48,6 +48,48 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 describe('Fluxo do cadastro', () => {
+  it('revisa 40 cadeiras por R$ 300 sem jogos ou mesas e salva a cobrança combinada', async () => {
+    vi.mocked(cadastrarAluguel).mockResolvedValueOnce(undefined as never);
+    const user = userEvent.setup();
+    render(<AluguelForm />);
+    expect(
+      screen.queryByLabelText('Preço do jogo (R$)')
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText('Preço da cadeira avulsa (R$)')
+    ).not.toBeInTheDocument();
+    const fill = (label: string, value: string) =>
+      fireEvent.change(screen.getByLabelText(label), { target: { value } });
+    fill('Nome do cliente *', 'Ana');
+    fill('Telefone *', '(62) 99999-1234');
+    fill('Cadeiras avulsas', '40');
+    await user.selectOptions(
+      screen.getByLabelText('Cálculo do valor'),
+      'combinado'
+    );
+    fill('Valor combinado dos itens (R$) *', '300,00');
+    await user.click(screen.getByRole('button', { name: 'Continuar' }));
+    fill('Endereço da entrega *', 'Rua A, 20');
+    fill('Data de entrega *', '2026-10-14');
+    await user.click(screen.getByRole('button', { name: 'Continuar' }));
+    expect(cadastrarAluguel).not.toHaveBeenCalled();
+    await user.click(screen.getByRole('button', { name: 'Confirmar aluguel' }));
+    expect(cadastrarAluguel).toHaveBeenCalledWith(
+      expect.objectContaining({
+        valor: 300,
+        itens: {
+          jogos: 0,
+          mesaQuantidade: 0,
+          cadeiraQuantidade: 40,
+          forroQuantidade: 0,
+        },
+        cobranca: expect.objectContaining({
+          modo: 'combinado',
+          valorCombinado: 300,
+        }),
+      })
+    );
+  });
   it('só exclui o aluguel depois da confirmação e permite cancelar', async () => {
     vi.mocked(excluirAluguel).mockResolvedValueOnce(undefined);
     const user = userEvent.setup();
