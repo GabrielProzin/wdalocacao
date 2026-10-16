@@ -64,7 +64,7 @@
   font-weight: 600;
 }
 .tabs span {
-  font-size: 10px;
+  font-size: 12px;
   background: #f1f4f1;
   border-radius: 5px;
   padding: 1px 6px;
@@ -138,13 +138,13 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 4px;
   min-height: 20px;
 }
 .cardTop :global(.badge) {
-  font-size: 9px;
+  font-size: 12px;
   padding: 4px 7px;
 }
 .itemRow {
@@ -191,7 +191,7 @@
   background: #fcf3ed;
   border-radius: 8px;
   padding: 10px;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 14px;
 }
 .details {
@@ -304,12 +304,12 @@
   }
   .tabs button {
     padding: 8px 5px;
-    font-size: 10px;
+    font-size: 12px;
     gap: 4px;
     justify-content: center;
   }
   .tabs span {
-    font-size: 9px;
+    font-size: 12px;
     padding: 1px 4px;
   }
   .filterBottom {
@@ -335,7 +335,7 @@
     font-size: 12px;
   }
   .cardTop :global(.badge) {
-    font-size: 10px;
+    font-size: 12px;
   }
   .itemRow {
     font-size: 12px;

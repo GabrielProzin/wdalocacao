@@ -15,7 +15,7 @@
 .periodRow small {
   color: var(--muted);
   font-weight: 400;
-  font-size: 10px;
+  font-size: 12px;
   margin-left: 8px;
 }
 .liveDot {
@@ -81,7 +81,7 @@
   white-space: nowrap;
 }
 .stat > small {
-  font-size: 10px;
+  font-size: 12px;
   display: block;
   color: var(--muted);
 }
@@ -163,7 +163,7 @@
 }
 .eventInfo span {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 4px;
 }
@@ -177,7 +177,7 @@
 .eventDate small {
   display: block;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 5px;
 }
 .eventDate .overdue {
@@ -222,7 +222,7 @@
 .recentRow small {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 5px;
 }
 .recentValue {
@@ -230,7 +230,7 @@
   flex-shrink: 0;
 }
 .recentValue :global(.badge) {
-  font-size: 9px;
+  font-size: 12px;
   padding: 3px 7px;
   margin-top: 5px;
 }
@@ -270,7 +270,7 @@
     margin-bottom: 18px;
   }
   .caption {
-    font-size: 10px;
+    font-size: 12px;
   }
   .eventInfo strong {
     font-size: 12px;
@@ -299,7 +299,7 @@
     padding: 17px 14px;
   }
   .stat > div {
-    font-size: 10px;
+    font-size: 12px;
     align-items: flex-start;
   }
   .stat > div svg {
@@ -311,7 +311,7 @@
     letter-spacing: -1px;
   }
   .stat > small {
-    font-size: 9px;
+    font-size: 12px;
     line-height: 1.6;
   }
   .periodRow small {

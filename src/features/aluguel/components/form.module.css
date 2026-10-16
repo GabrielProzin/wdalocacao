@@ -40,7 +40,7 @@
   font-size: 17px;
 }
 .steps small {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   display: block;
   margin-bottom: 3px;
@@ -169,7 +169,7 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: -10px;
   flex-wrap: wrap;
@@ -268,7 +268,7 @@
   letter-spacing: -1px;
 }
 .summaryFoot {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   display: flex;
   gap: 6px;
@@ -290,7 +290,7 @@
   gap: 6px;
 }
 .review small {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
   letter-spacing: 1px;
 }
