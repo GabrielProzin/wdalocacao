@@ -55,7 +55,6 @@ export function MonthlyChart({
     >
       <div className={styles.heading}>
         <div>
-          <p className={styles.eyebrow}>EVOLUÇÃO DOS ALUGUÉIS</p>
           <h2 id={`${gradientId}-title`}>Seu negócio ao longo dos meses</h2>
         </div>
         <span className={styles.icon}>
@@ -199,7 +198,6 @@ export function StatusChart({
     <section className={`panel ${styles.panel}`} aria-labelledby={titleId}>
       <div className={styles.heading}>
         <div>
-          <p className={styles.eyebrow}>DISTRIBUIÇÃO POR STATUS</p>
           <h2 id={titleId}>Como está o mês?</h2>
         </div>
         <span className={styles.icon}>

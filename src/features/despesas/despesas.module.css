@@ -122,6 +122,14 @@
   font-weight: 600;
   cursor: pointer;
 }
+/* Na lista, excluir fica discreto; o destaque vermelho é só na confirmação. */
+.deleteQuiet {
+  border-color: transparent;
+  background: transparent;
+}
+.deleteQuiet:hover {
+  background: #fdf1ef;
+}
 .delete:disabled {
   opacity: 0.6;
   cursor: wait;

@@ -8,7 +8,6 @@ import {
   FiList,
   FiPlus,
   FiLogOut,
-  FiArrowUpRight,
   FiDollarSign,
   FiSettings,
 } from 'react-icons/fi';
@@ -17,11 +16,21 @@ import { AlugueisProvider } from '@/features/aluguel/hooks/AlugueisContext';
 import styles from './shell.module.css';
 import { DespesasProvider } from '@/features/despesas/DespesasContext';
 const nav = [
-  { href: '/home', label: 'Visão geral', Icon: FiGrid },
-  { href: '/Aluguel/List', label: 'Aluguéis', Icon: FiList },
-  { href: '/Aluguel/New', label: 'Novo aluguel', Icon: FiPlus },
-  { href: '/Despesas', label: 'Despesas', Icon: FiDollarSign },
-  { href: '/Configuracoes', label: 'Configurações', Icon: FiSettings },
+  { href: '/home', label: 'Visão geral', short: 'Início', Icon: FiGrid },
+  { href: '/Aluguel/List', label: 'Aluguéis', short: 'Aluguéis', Icon: FiList },
+  { href: '/Aluguel/New', label: 'Novo aluguel', short: 'Novo', Icon: FiPlus },
+  {
+    href: '/Despesas',
+    label: 'Despesas',
+    short: 'Despesas',
+    Icon: FiDollarSign,
+  },
+  {
+    href: '/Configuracoes',
+    label: 'Configurações',
+    short: 'Preços',
+    Icon: FiSettings,
+  },
 ];
 export default function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -50,7 +59,6 @@ export default function AppShell({ children }: { children: ReactNode }) {
                 WDA<span className={styles.brandSub}>LOCAÇÃO</span>
               </span>
             </Link>
-            <p className={styles.navCaption}>SEU ESPAÇO DE TRABALHO</p>
             <nav aria-label="Navegação principal">
               {nav.map(({ href, label, Icon }) => (
                 <Link
@@ -66,18 +74,6 @@ export default function AppShell({ children }: { children: ReactNode }) {
               ))}
             </nav>
             <div className={styles.sidebarBottom}>
-              <div className={styles.tip}>
-                <FiArrowUpRight size={22} />
-                <h3>
-                  Mais organização.
-                  <br />
-                  Mais tranquilidade.
-                </h3>
-                <p>Seus aluguéis, do primeiro contato à devolução.</p>
-              </div>
-              <span className={styles.account}>
-                Uso exclusivo · WDA Locação
-              </span>
               <button
                 className={styles.logout}
                 onClick={logout}
@@ -109,9 +105,6 @@ export default function AppShell({ children }: { children: ReactNode }) {
                           : 'Visão geral'}
               </div>
               <div className={styles.headerRight}>
-                <span className={styles.headerNote}>
-                  Um dia organizado começa aqui.
-                </span>
                 <button
                   className={styles.mobileLogout}
                   onClick={logout}
@@ -133,20 +126,18 @@ export default function AppShell({ children }: { children: ReactNode }) {
               )}
               {children}
             </main>
-            <footer className={styles.footer}>
-              WDA Locação <span>Feito para simplificar o seu dia.</span>
-            </footer>
+            <footer className={styles.footer}>WDA Locação</footer>
           </div>
           <nav className={styles.mobileNav} aria-label="Navegação no celular">
-            {nav.map(({ href, label, Icon }) => (
+            {nav.map(({ href, short, Icon }) => (
               <Link
                 key={href}
                 href={href}
                 aria-current={pathname === href ? 'page' : undefined}
-                className={pathname === href ? styles.mobileActive : ''}
+                className={`${pathname === href ? styles.mobileActive : ''} ${href === '/Aluguel/New' ? styles.mobileNew : ''}`}
               >
-                <Icon size={21} />
-                <span>{label}</span>
+                <Icon size={href === '/Aluguel/New' ? 24 : 21} />
+                <span>{short}</span>
               </Link>
             ))}
           </nav>

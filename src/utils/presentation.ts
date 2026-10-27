@@ -1,6 +1,24 @@
 import { Aluguel } from '@/features/aluguel/models/Aluguel';
+// Mostra só o que vai no pedido: "4 mesas · 16 cadeiras", sem "0 forros".
+export function listaItens(mesas: number, cadeiras: number, forros: number) {
+  const partes = (
+    [
+      [mesas, 'mesa', 'mesas'],
+      [cadeiras, 'cadeira', 'cadeiras'],
+      [forros, 'forro', 'forros'],
+    ] as const
+  )
+    .map(([n, um, varios]) => [Number(n) || 0, um, varios] as const)
+    .filter(([n]) => n > 0)
+    .map(([n, um, varios]) => `${n} ${n === 1 ? um : varios}`);
+  return partes.length ? partes.join(' · ') : 'Nenhum item';
+}
 export function resumoItens(a: Aluguel) {
-  return `${a.itens.mesaQuantidade} mesas · ${a.itens.cadeiraQuantidade} cadeiras · ${a.itens.forroQuantidade} forros`;
+  return listaItens(
+    a.itens.mesaQuantidade,
+    a.itens.cadeiraQuantidade,
+    a.itens.forroQuantidade
+  );
 }
 export const compactMoney = (value: number) =>
   new Intl.NumberFormat('pt-BR', {

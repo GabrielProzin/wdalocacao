@@ -58,7 +58,6 @@ export default function ConfiguracoesPrecos() {
     <>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">DO SEU JEITO</p>
           <h1>Configurações</h1>
           <p>Defina os preços usados nos próximos aluguéis.</p>
         </div>

@@ -15,7 +15,7 @@
 .periodRow small {
   color: var(--muted);
   font-weight: 400;
-  font-size: 12px;
+  font-size: 13px;
   margin-left: 8px;
 }
 .liveDot {
@@ -37,7 +37,7 @@
 .period input {
   border: 0;
   background: transparent;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink);
   width: 145px;
   min-height: 40px;
@@ -51,7 +51,7 @@
 .stat {
   padding: 21px;
   background: white;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 16px;
   min-width: 0;
 }
@@ -60,7 +60,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
 }
 .stat > div svg {
@@ -81,13 +81,12 @@
   white-space: nowrap;
 }
 .stat > small {
-  font-size: 12px;
+  font-size: 13px;
   display: block;
   color: var(--muted);
 }
 .featured {
-  background: #e8f1eb;
-  border-color: #d6e6db;
+  background: #e3efe7;
 }
 .featured > div,
 .featured > small {
@@ -107,7 +106,7 @@
   margin-bottom: 24px;
 }
 .caption {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   margin-top: 5px;
 }
@@ -115,10 +114,11 @@
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 22px;
+  margin-bottom: 24px;
 }
 .countPill {
   padding: 4px 9px;
-  font-size: 11px;
+  font-size: 13px;
   background: #edf3ef;
   color: var(--brand);
   border-radius: 7px;
@@ -155,7 +155,7 @@
 .eventInfo strong,
 .recentRow strong {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -163,7 +163,7 @@
 }
 .eventInfo span {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   margin-top: 4px;
 }
@@ -172,12 +172,12 @@
   flex-shrink: 0;
 }
 .eventDate strong {
-  font-size: 11px;
+  font-size: 13px;
 }
 .eventDate small {
   display: block;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 5px;
 }
 .eventDate .overdue {
@@ -185,13 +185,13 @@
 }
 .agenda + :global(.text-button) {
   margin-top: 17px;
-  font-size: 12px;
+  font-size: 13px;
 }
 .smallLink {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--brand);
 }
 .recentRow {
@@ -212,7 +212,7 @@
   border-radius: 50%;
   background: #eef0e9;
   color: #7b8263;
-  font-size: 12px;
+  font-size: 13px;
   flex-shrink: 0;
 }
 .recentRow > div:not(.recentValue) {
@@ -222,7 +222,7 @@
 .recentRow small {
   display: block;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 5px;
 }
 .recentValue {
@@ -230,7 +230,7 @@
   flex-shrink: 0;
 }
 .recentValue :global(.badge) {
-  font-size: 12px;
+  font-size: 13px;
   padding: 3px 7px;
   margin-top: 5px;
 }
@@ -248,7 +248,7 @@
   color: var(--ink);
 }
 .empty p {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   max-width: 240px;
 }
@@ -270,10 +270,10 @@
     margin-bottom: 18px;
   }
   .caption {
-    font-size: 12px;
+    font-size: 13px;
   }
   .eventInfo strong {
-    font-size: 12px;
+    font-size: 13px;
   }
   .agendaRow {
     gap: 9px;
@@ -282,7 +282,7 @@
     display: none;
   }
   .recentRow strong {
-    font-size: 12px;
+    font-size: 13px;
   }
 }
 @media (max-width: 950px) {
@@ -299,11 +299,11 @@
     padding: 17px 14px;
   }
   .stat > div {
-    font-size: 12px;
+    font-size: 13px;
     align-items: flex-start;
   }
   .stat > div svg {
-    font-size: 12px;
+    font-size: 13px;
     padding: 5px;
   }
   .stat > strong {
@@ -311,7 +311,7 @@
     letter-spacing: -1px;
   }
   .stat > small {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.6;
   }
   .periodRow small {

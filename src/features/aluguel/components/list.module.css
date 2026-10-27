@@ -30,14 +30,23 @@
   outline-offset: 4px;
   font-size: 13px;
 }
-.filterTop > input {
+.month {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   border: 1px solid var(--line);
-  padding: 10px;
   border-radius: 10px;
+  padding: 0 4px 0 13px;
   font-size: 13px;
   color: var(--muted);
-  max-width: 180px;
   min-height: 46px;
+}
+.month input {
+  border: 0;
+  background: none;
+  color: var(--ink);
+  min-height: 44px;
+  max-width: 170px;
 }
 .filterBottom {
   display: flex;
@@ -59,12 +68,12 @@
   min-height: 42px;
   padding: 9px 12px;
   border-radius: 9px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   font-weight: 600;
 }
 .tabs span {
-  font-size: 12px;
+  font-size: 13px;
   background: #f1f4f1;
   border-radius: 5px;
   padding: 1px 6px;
@@ -80,12 +89,12 @@
   background: white;
   border: 0;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 13px;
   min-height: 44px;
   max-width: 150px;
 }
 .resultCount {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   margin: 0 0 17px;
 }
@@ -100,7 +109,7 @@
 }
 .card {
   background: white;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 17px;
   padding: 22px;
   min-width: 0;
@@ -138,13 +147,13 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   margin-top: 4px;
   min-height: 20px;
 }
 .cardTop :global(.badge) {
-  font-size: 12px;
+  font-size: 13px;
   padding: 4px 7px;
 }
 .itemRow {
@@ -155,7 +164,7 @@
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   margin-bottom: 19px;
 }
@@ -166,7 +175,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
 }
 .cardInfo p {
@@ -191,11 +200,11 @@
   background: #fcf3ed;
   border-radius: 8px;
   padding: 10px;
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 14px;
 }
 .details {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   margin-top: 15px;
 }
@@ -230,8 +239,7 @@
 .cardBottom small {
   display: block;
   color: var(--muted);
-  letter-spacing: 1px;
-  font-size: 8px;
+  font-size: 13px;
 }
 .cardBottom strong {
   font-size: 20px;
@@ -240,7 +248,7 @@
 }
 .cardBottom :global(.secondary) {
   min-height: 40px;
-  font-size: 11px;
+  font-size: 13px;
   padding: 8px 12px;
 }
 .advanceStatus {
@@ -254,7 +262,7 @@
   gap: 8px;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   padding: 12px;
   min-height: 44px;
@@ -295,7 +303,7 @@
     font-size: 16px;
   }
   .search input::placeholder {
-    font-size: 12px;
+    font-size: 13px;
   }
   .tabs {
     gap: 4px;
@@ -304,12 +312,12 @@
   }
   .tabs button {
     padding: 8px 5px;
-    font-size: 12px;
+    font-size: 13px;
     gap: 4px;
     justify-content: center;
   }
   .tabs span {
-    font-size: 12px;
+    font-size: 13px;
     padding: 1px 4px;
   }
   .filterBottom {
@@ -317,7 +325,7 @@
   }
   .filterBottom select {
     align-self: flex-end;
-    font-size: 11px;
+    font-size: 13px;
   }
   .card {
     padding: 21px;
@@ -329,19 +337,19 @@
     font-size: 15px;
   }
   .client a {
-    font-size: 11px;
+    font-size: 13px;
   }
   .cardInfo {
-    font-size: 12px;
+    font-size: 13px;
   }
   .cardTop :global(.badge) {
-    font-size: 12px;
+    font-size: 13px;
   }
   .itemRow {
-    font-size: 12px;
+    font-size: 13px;
   }
   .advanceStatus {
-    font-size: 12px;
+    font-size: 13px;
   }
   .cardBottom strong {
     font-size: 23px;

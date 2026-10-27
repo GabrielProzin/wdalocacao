@@ -15,7 +15,7 @@
 .heading p,
 .note {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
 }
 .heading p {
@@ -33,7 +33,7 @@
   min-width: 0;
 }
 .field label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 .field input {

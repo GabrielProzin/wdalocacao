@@ -47,18 +47,20 @@ export default function AluguelCard({
         </span>
       </div>
       <div className={styles.itemRow}>
-        <span>
-          <strong>{a.itens.jogos}</strong> jogos
-        </span>
-        <span>
-          <strong>{a.itens.mesaQuantidade}</strong> mesas
-        </span>
-        <span>
-          <strong>{a.itens.cadeiraQuantidade}</strong> cadeiras
-        </span>
-        <span>
-          <strong>{a.itens.forroQuantidade}</strong> forros
-        </span>
+        {(
+          [
+            [a.itens.jogos, 'jogo', 'jogos'],
+            [a.itens.mesaQuantidade, 'mesa', 'mesas'],
+            [a.itens.cadeiraQuantidade, 'cadeira', 'cadeiras'],
+            [a.itens.forroQuantidade, 'forro', 'forros'],
+          ] as const
+        )
+          .filter(([n]) => Number(n) > 0)
+          .map(([n, um, varios]) => (
+            <span key={varios}>
+              <strong>{n}</strong> {n === 1 ? um : varios}
+            </span>
+          ))}
       </div>
       <div className={styles.cardInfo}>
         <p>
@@ -96,7 +98,7 @@ export default function AluguelCard({
       </details>
       <div className={styles.cardBottom}>
         <div>
-          <small>VALOR TOTAL</small>
+          <small>Valor total</small>
           <strong>{money(a.valor)}</strong>
         </div>
         <Link className="secondary" href={`/Aluguel/Edit/${a.id}`}>

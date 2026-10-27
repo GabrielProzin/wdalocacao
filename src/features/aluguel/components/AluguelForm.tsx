@@ -25,7 +25,7 @@ import {
   formatarNome,
   formatarTelefone,
 } from '@/features/validationFunctions/validationFunctions';
-import { money, fullDate, statusLabel } from '@/utils/presentation';
+import { money, fullDate, statusLabel, listaItens } from '@/utils/presentation';
 import { parseLocalDate, formatarDistanciaLegivel } from '@/utils/aluguelUtils';
 import styles from './form.module.css';
 const steps = [
@@ -116,7 +116,6 @@ export default function AluguelForm({
         <span className={styles.successIcon}>
           <FiCheckCircle size={38} />
         </span>
-        <p className="eyebrow">TUDO CERTO</p>
         <h1>
           {modo === 'editar' ? 'Alterações salvas!' : 'Aluguel cadastrado!'}
         </h1>
@@ -126,8 +125,11 @@ export default function AluguelForm({
         </p>
         <div className={styles.successSummary}>
           <span>
-            {totalMesas(form)} mesas · {totalCadeiras(form)} cadeiras ·{' '}
-            {Number(form.forroQuantidade)} forros
+            {listaItens(
+              totalMesas(form),
+              totalCadeiras(form),
+              Number(form.forroQuantidade)
+            )}
           </span>
           <strong>{money(calcularValor())}</strong>
         </div>
@@ -156,8 +158,7 @@ export default function AluguelForm({
       </Link>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">DO PEDIDO À DEVOLUÇÃO</p>
-          <h1>{modo === 'editar' ? 'Editar aluguel' : 'Novo aluguel.'}</h1>
+          <h1>{modo === 'editar' ? 'Editar aluguel' : 'Novo aluguel'}</h1>
           <p>Um passo de cada vez. Todos os detalhes em um só lugar.</p>
         </div>
       </div>
@@ -516,8 +517,11 @@ export default function AluguelForm({
           </div>
           <p className={styles.summaryHint}>Seu pedido, sem surpresas.</p>
           <p className={styles.summaryHint}>
-            {totalMesas(form)} mesas · {totalCadeiras(form)} cadeiras ·{' '}
-            {Number(form.forroQuantidade) || 0} forros
+            {listaItens(
+              totalMesas(form),
+              totalCadeiras(form),
+              Number(form.forroQuantidade)
+            )}
           </p>
           {form.modoValor === 'combinado' ? (
             <div className={styles.summaryLine}>

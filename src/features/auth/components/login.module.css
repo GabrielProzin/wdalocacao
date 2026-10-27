@@ -46,7 +46,7 @@
 .introBottom {
   position: absolute;
   bottom: 42px;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 1.5px;
   color: #99b3a6;
 }
@@ -73,7 +73,7 @@
 }
 .card label {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
 }
 .card input {
   min-height: 50px;
@@ -94,7 +94,7 @@
   justify-content: center;
   gap: 8px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 13px;
   margin-top: 28px;
 }
 .smallBrand {

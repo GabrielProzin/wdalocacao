@@ -21,7 +21,7 @@
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: 0.8px;
-  margin-bottom: 52px;
+  margin-bottom: 44px;
 }
 .mark {
   display: flex;
@@ -40,17 +40,11 @@
 }
 .brandSub {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 3px;
   margin-top: 6px;
   color: #afc7ba;
-}
-.navCaption {
-  font-size: 12px;
-  letter-spacing: 1.7px;
-  margin-bottom: 17px;
-  color: #78958e;
 }
 .navLink {
   padding: 14px;
@@ -81,32 +75,6 @@
   margin-top: auto;
   padding-top: 35px;
 }
-.tip {
-  background: #1e3834;
-  border: 1px solid #365149;
-  border-radius: 13px;
-  padding: 18px;
-  margin-bottom: 24px;
-}
-.tip svg {
-  color: #bcdbac;
-  margin-bottom: 15px;
-}
-.tip h3 {
-  color: #e1ebe3;
-  line-height: 1.5;
-  font-size: 14px;
-}
-.tip p {
-  font-size: 11px;
-  line-height: 1.8;
-  margin-top: 9px;
-}
-.account {
-  font-size: 12px;
-  display: block;
-  padding: 0 7px;
-}
 .logout {
   display: flex;
   align-items: center;
@@ -116,7 +84,7 @@
   border: 0;
   margin-top: 15px;
   padding: 10px 7px;
-  font-size: 12px;
+  font-size: 13px;
   min-height: 44px;
 }
 .workspace {
@@ -136,7 +104,7 @@
   gap: 15px;
 }
 .breadcrumb {
-  font-size: 12px;
+  font-size: 13px;
   color: #657a78;
 }
 .breadcrumb span {
@@ -148,10 +116,6 @@
   align-items: center;
   gap: 20px;
 }
-.headerNote {
-  font-size: 11px;
-  color: #7c8c8a;
-}
 .avatar {
   display: grid;
   place-items: center;
@@ -162,7 +126,7 @@
   height: 35px;
   background: #ecd9c7;
   color: #7d674f;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 .content {
@@ -174,7 +138,7 @@
 }
 .footer {
   padding: 20px 38px;
-  font-size: 12px;
+  font-size: 13px;
   color: #879490;
   display: flex;
   justify-content: space-between;
@@ -202,9 +166,6 @@
   }
   .header {
     padding: 0 25px;
-  }
-  .headerNote {
-    display: none;
   }
 }
 @media (max-width: 760px) {
@@ -278,7 +239,7 @@
     gap: 5px;
     border-radius: 10px;
     color: #7b8987;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
   }
   .mobileNav .mobileActive {
@@ -287,9 +248,28 @@
   }
   .footer {
     padding: 24px 20px;
-    font-size: 12px;
+    font-size: 13px;
   }
   .footer span {
     display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .mobileNav .mobileNew {
+    color: var(--brand);
+  }
+  .mobileNav .mobileNew svg {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    margin-top: -22px;
+    border-radius: 14px;
+    background: var(--brand);
+    color: white;
+    box-sizing: border-box;
+  }
+  .mobileNav .mobileNew.mobileActive {
+    background: transparent;
   }
 }

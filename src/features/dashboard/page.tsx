@@ -24,6 +24,7 @@ import {
   dateLabel,
   statusLabel,
   resumoItens,
+  listaItens,
 } from '@/utils/presentation';
 import styles from './overview.module.css';
 import ResumoDespesas from '@/features/despesas/ResumoDespesas';
@@ -48,9 +49,8 @@ export default function DashboardPage() {
     <>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">SEU NEGÓCIO, BEM CUIDADO</p>
-          <h1>Uma visão clara do seu dia.</h1>
-          <p>Acompanhe seus números e saiba o que vem a seguir.</p>
+          <h1>Visão geral</h1>
+          <p>{hojeExtenso()}</p>
         </div>
         <Link href="/Aluguel/New" className="primary">
           <FiPlus size={18} /> Novo aluguel
@@ -62,7 +62,7 @@ export default function DashboardPage() {
             className={styles.liveDot}
             style={erro ? { background: '#b35243' } : undefined}
           />
-          <span>Visão geral</span>
+          <span>Números do mês</span>
           <small>
             {erro
               ? 'Conexão indisponível'
@@ -82,7 +82,6 @@ export default function DashboardPage() {
           />
         </label>
       </div>
-      <ResumoDespesas periodo={periodo} />
       {erro ? (
         <div className="state">
           <FiRefreshCw size={32} />
@@ -145,21 +144,14 @@ export default function DashboardPage() {
               </div>
               <strong>{stats.jogosEmUso.toString().padStart(2, '0')}</strong>
               <small>
-                Em aluguéis entregues · {stats.mesasEmUso} mesas ·{' '}
-                {stats.cadeirasEmUso} cadeiras · {stats.forrosEmUso} forros
+                Em aluguéis entregues ·{' '}
+                {listaItens(
+                  stats.mesasEmUso,
+                  stats.cadeirasEmUso,
+                  stats.forrosEmUso
+                )}
               </small>
             </div>
-          </div>
-          <div className={styles.analyticsGrid}>
-            <MonthlyChart
-              historico={stats.historico}
-              receitaMensal={stats.receitaMensal}
-            />
-            <StatusChart
-              status={stats.status}
-              total={stats.locacoesNoMes}
-              ticketMedio={stats.ticketMedio}
-            />
           </div>
           <div className={styles.bottomGrid}>
             <section className="panel">
@@ -265,10 +257,30 @@ export default function DashboardPage() {
               )}
             </section>
           </div>
+          <div className={styles.analyticsGrid}>
+            <MonthlyChart
+              historico={stats.historico}
+              receitaMensal={stats.receitaMensal}
+            />
+            <StatusChart
+              status={stats.status}
+              total={stats.locacoesNoMes}
+              ticketMedio={stats.ticketMedio}
+            />
+          </div>
         </>
       )}
+      <ResumoDespesas periodo={periodo} />
     </>
   );
+}
+function hojeExtenso() {
+  const texto = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  }).format(new Date());
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 function FiCheckCircleIcon() {
   return <FiCalendar size={26} />;

@@ -48,8 +48,7 @@ export default function ListRentPage() {
     <>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">TUDO NO SEU CONTROLE</p>
-          <h1>Seus aluguéis.</h1>
+          <h1>Aluguéis</h1>
           <p>Encontre um pedido, acompanhe a entrega e conclua a devolução.</p>
         </div>
         <Link href="/Aluguel/New" className="primary">
@@ -67,12 +66,14 @@ export default function ListRentPage() {
               onChange={e => setSearch(e.target.value)}
             />
           </label>
-          <input
-            aria-label="Filtrar por mês de entrega"
-            type="month"
-            value={periodo}
-            onChange={e => setPeriodo(e.target.value)}
-          />
+          <label className={styles.month}>
+            <span>Mês da entrega</span>
+            <input
+              type="month"
+              value={periodo}
+              onChange={e => setPeriodo(e.target.value)}
+            />
+          </label>
           {periodo && (
             <button className="text-button" onClick={() => setPeriodo('')}>
               Limpar mês

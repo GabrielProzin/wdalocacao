@@ -119,8 +119,7 @@ function DespesasContent() {
     <>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">CADA GASTO NO SEU LUGAR</p>
-          <h1>Suas despesas.</h1>
+          <h1>Despesas</h1>
           <p>Combustível, materiais e outros gastos do negócio.</p>
         </div>
         <button className="primary" disabled={busy} onClick={() => abrir()}>
@@ -290,7 +289,7 @@ function DespesasContent() {
                         <FiEdit2 /> Editar
                       </button>
                       <button
-                        className={styles.delete}
+                        className={`${styles.delete} ${styles.deleteQuiet}`}
                         disabled={busy}
                         onClick={() => {
                           setFalha('');

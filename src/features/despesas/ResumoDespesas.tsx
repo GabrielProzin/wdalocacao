@@ -15,7 +15,6 @@ export default function ResumoDespesas({ periodo }: { periodo: string }) {
     >
       <div className={styles.heading}>
         <div>
-          <p className="eyebrow">CONTROLE DOS GASTOS</p>
           <h2 id="despesas-resumo">Despesas do mês</h2>
         </div>
         <FiDollarSign size={24} />

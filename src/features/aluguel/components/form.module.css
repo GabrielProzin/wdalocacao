@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   margin-bottom: 22px;
   min-height: 32px;
@@ -40,13 +40,13 @@
   font-size: 17px;
 }
 .steps small {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 1px;
   display: block;
   margin-bottom: 3px;
 }
 .steps strong {
-  font-size: 12px;
+  font-size: 13px;
 }
 .steps .current {
   color: var(--brand);
@@ -82,7 +82,7 @@
 }
 .formTitle p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 5px;
 }
 .sectionIcon {
@@ -111,7 +111,7 @@
   min-width: 0;
 }
 .field label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 .field label span {
@@ -139,7 +139,7 @@
 }
 .field small,
 .fieldHint {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
 }
 .fieldHint {
@@ -169,7 +169,7 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   margin-top: -10px;
   flex-wrap: wrap;
@@ -182,7 +182,7 @@
   background: #f0f6f2;
   border-radius: 10px;
   padding: 14px;
-  font-size: 12px;
+  font-size: 13px;
 }
 .checkRow {
   display: flex;
@@ -202,7 +202,7 @@
 }
 .checkRow small {
   display: block;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   margin-top: 3px;
 }
@@ -232,7 +232,7 @@
   color: var(--brand);
 }
 .summaryHint {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   margin: 6px 0 26px;
 }
@@ -240,7 +240,7 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 11px;
+  font-size: 13px;
   margin: 16px 0;
   color: var(--muted);
 }
@@ -260,7 +260,7 @@
   color: var(--brand-dark);
 }
 .total span {
-  font-size: 11px;
+  font-size: 13px;
 }
 .total strong {
   font-family: 'Manrope', sans-serif;
@@ -268,7 +268,7 @@
   letter-spacing: -1px;
 }
 .summaryFoot {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   display: flex;
   gap: 6px;
@@ -290,7 +290,7 @@
   gap: 6px;
 }
 .review small {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   letter-spacing: 1px;
 }
@@ -299,7 +299,7 @@
   overflow-wrap: anywhere;
 }
 .review span {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   overflow-wrap: anywhere;
 }
@@ -307,7 +307,7 @@
   background: none;
   border: 0;
   color: var(--danger);
-  font-size: 12px;
+  font-size: 13px;
   min-height: 44px;
   margin-top: 14px;
 }
@@ -447,10 +447,10 @@
     font-size: 15px;
   }
   .steps strong {
-    font-size: 11px;
+    font-size: 13px;
   }
   .steps small {
-    font-size: 8px;
+    font-size: 13px;
   }
   .formPanel {
     padding: 21px 18px;
@@ -468,7 +468,7 @@
     gap: 12px;
   }
   .formTitle p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .actions {
     background: white;
